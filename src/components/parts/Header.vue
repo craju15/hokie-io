@@ -95,7 +95,7 @@
         }, 200)
       },
       onSearchBarChange (e) {
-        ax.get('http://localhost:3010/getQuickSearchResults/' + e.target.value)
+        ax.get(window.backend_url + '/getQuickSearchResults/' + e.target.value)
           .then((response) => {
             this.quickSearchResults = response.data.results
             this.quickSearchResultsStyles = {
