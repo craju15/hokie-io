@@ -79,7 +79,7 @@
       },
       handleAmtChange (change) {
         let _this = this
-        ax.get('http://localhost:3010/updateAnswerAmt?' +
+        ax.get(window.backend_url + '/updateAnswerAmt?' +
           'change=' + change + '&answerID=' + this.info._id +
           '&email=' + window.getCookie('email') +
           '&sessionToken=' + window.getCookie('sessionToken'))
