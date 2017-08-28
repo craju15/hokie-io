@@ -34,7 +34,7 @@
       <div class='modal-background'></div>
       <div class='limit-warning-modal'>
         <div class='modal-title'>Are you sure?</div>
-        <div class='modal-body'>You have a limit of 2 questions per day!</div>
+        <div class='modal-body'></div>
         <a class='post-button' v-on:click='newQuestionHandler'>Yes!</a>
         <a class='cancel-button' v-on:click='hideModal'>Nope</a>
       </div>

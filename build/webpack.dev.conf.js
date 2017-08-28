@@ -32,7 +32,7 @@ module.exports = merge(baseWebpackConfig, {
     }),
     new FriendlyErrorsPlugin(),
     new webpack.DefinePlugin({
-      'BACKEND_URL': JSON.stringify('http://localhost:3010'),
+      'BACKEND_URL': JSON.stringify('https://hokie.io'),
       'DEV_MODE': JSON.stringify(true)
     })
   ]
