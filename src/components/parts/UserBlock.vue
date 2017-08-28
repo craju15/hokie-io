@@ -3,7 +3,7 @@
     <!-- <img :src='(!info.pic || info.pic === "") ? default_pic : info.pic'/> -->
     <div class='image-filler' :style='{backgroundColor: info.pic}'>
       <div class='image-circle' :style='{color: info.pic}'>
-        {{ info.name.split(' ')[0][0] + info.name.split(' ')[1][0] }}
+        {{ initials }}
       </div>
     </div>
     <div class='profile-right-part'>
@@ -27,6 +27,15 @@
     data () {
       return {
         default_pic: window.default_pic
+      }
+    },
+    computed: {
+      initials () {
+        if (this.info.name !== '-') {
+          return this.info.name.split(' ')[0][0] + this.info.name.split(' ')[1][0]
+        } else {
+          return this.info.name
+        }
       }
     }
   }
