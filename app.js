@@ -236,8 +236,8 @@ function setupExpress (db) {
         if (vtResults.data.length != 1) {
           res.send({err: 'Invalid Virginia Tech email!'});
         } else {
-          userInfo.firstName = vtResults.data[0].givenName;
-          userInfo.lastName = vtResults.data[0].sn;
+          userInfo.firstName = vtResults.data[0].givenName[0];
+          userInfo.lastName = vtResults.data[0].sn[0];
           userInfo.major = vtResults.data[0].major;
           // userID still must be checked in case it matches another person
           userInfo.userID = (userInfo.firstName + '.' + userInfo.lastName).replace(/\s/g, '').toLowerCase();
@@ -247,7 +247,7 @@ function setupExpress (db) {
           userInfo.dateJoined = new Date();
           userInfo.hokieRank = 69;
           userInfo.peopleReached = 0;
-          userInfo.pic = '';
+          userInfo.pic = 'lightblue';
           findUserArray(userInfo.userID, db, function (userDocs) {
             // change userID if other people have to same name
             if (userDocs.length != 0) {
