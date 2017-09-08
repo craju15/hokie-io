@@ -405,12 +405,15 @@ function findUserArray (userID, db, callback) {
 
 function getRecentQuestions (db, callback) {
   var questionCollection = db.collection('questions');
-  questionCollection.find({}).sort({_id: -1}).toArray(function (err, results) {
-    if (!err) {
-      callback(results);
-    } else {
-      console.error(err);
-    }
+  questionCollection.count(function (error, numberOfQuestions) {
+    questionCollection.find({_id: {$gt: numberOfQuestions - 30}})
+      .sort({_id: -1}).toArray(function (err, results) {
+      if (!err) {
+        callback(results);
+      } else {
+        console.error(err);
+      }
+    });
   });
 }
 
