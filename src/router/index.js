@@ -10,6 +10,7 @@ import NewQuestion from '@/components/NewQuestion'
 import Signup from '@/components/Signup'
 import Search from '@/components/Search'
 import Categories from '@/components/Categories'
+import Logs from '@/components/Logs'
 
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/categories',
       name: 'Categories',
       component: Categories
+    },
+    {
+      path: '/logs',
+      name: 'Logs',
+      component: Logs
     },
     {
       path: '/',

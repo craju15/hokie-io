@@ -399,6 +399,12 @@ function setupExpress (db) {
     });
   });
 
+  app.get('/getLast100Logs', function (res, res) {
+    getLast100Logs(db, function (err, result) {
+      res.send({result: result});
+    });
+  });
+
   // This is a catch all which serves the index.html
   // file to all other routes. That way, route handling
   // can be done with the front end
@@ -863,14 +869,27 @@ function updateProfilePic (email, url, db, callback) {
 }
 
 function addToLog (logName, logInfo, email, userID, db, callback) {
-  db.collection('logs')
-    .insert({
-      name: logName, 
-      info: logInfo, 
-      time: new Date(),
-      email: email,
-      userID: userID
-    }, function (err, result) {
-      callback(err, result)
+  getNextSequence('logID', db, function (nextLogID) {
+    db.collection('logs')
+      .insert({
+        _id: nextLogID,
+        name: logName, 
+        info: logInfo, 
+        time: new Date(),
+        email: email,
+        userID: userID
+      }, function (err, result) {
+        callback(err, result)
+      });
+  });
+}
+
+
+function getLast100Logs (db, callback) {
+  var logs = db.collection('logs');
+  logs.count(function (error, amt) {
+    logs.find({_id: {$gt: amt - 100}}).toArray(function (err, result) {
+      callback(err, result);
     });
+  });
 }
