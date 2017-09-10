@@ -472,7 +472,7 @@ function formatDate (dateObj) {
     return undefined;
   }
   // convert to local VT time (-4 hours)
-  dateObj.setMinutes(dateObj.getMinutes() - 240);
+  // dateObj.setMinutes(dateObj.getMinutes() - 240);
   var currentDate = new Date();
   var months = [
     'January', 'February', 'March',

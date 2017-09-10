@@ -1,20 +1,20 @@
 <template>
    <div class='content-container'>
      <div class='header-space'></div>
-     <table>
-      <tr class='logTitles'>
+     <table class='logs'>
+       <tr>
          <th>time</th>
+         <th>email</th>
          <th>name</th>
          <th>info</th>
-         <th>userID</th>
-         <th>email</th>
+         <!-- <th>userID</th> -->
        </tr>
-       <tr v-for='log in logs' class='logs'>
-         <th> {{ log.time }} </th>
-         <th> {{ log.name }} </th>
-         <th> {{ log.info }} </th>
-         <th> {{ log.userID }} </th>
-         <th> {{ log.email }} </th>
+       <tr v-for='log in logs'>
+         <td> {{ log.time }} </td>
+         <td> {{ log.email ? log.email : 'X' }} </td>
+         <td> {{ log.name }} </td>
+         <td> {{ log.info }} </td>
+         <!-- <td> {{ log.userID }} </td> -->
        </tr>
      </table>
    </div>
@@ -27,8 +27,8 @@ export default {
   data () {
     return {
       logs: [
-        {name: '-', info: '-', time: '', userID: '', email: ''},
-        {name: '-', info: '-', time: '', userID: '', email: ''}
+        // {name: '-', info: '-', time: '', userID: '', email: ''},
+        // {name: '-', info: '-', time: '', userID: '', email: ''}
       ]
     }
   },
@@ -36,7 +36,8 @@ export default {
     let _this = this
     ax.get('https://hokie.io' + '/getLast100Logs')
       .then(function (result) {
-        _this.logs = result.data.result
+        let logs = result.data.result
+        _this.logs = logs
       })
   }
 }
@@ -50,19 +51,23 @@ export default {
   background-color: grey;
 }
 
-.logs th {
+.logs td {
   text-align: left;
   color: black;
   font-weight: normal;
-  border-left: thin solid black;
-  border-bottom: thin solid black;
+  border-left: thin solid lightgrey;
+  border-bottom: thin solid lightgrey;
+  padding: 5px;
+  max-width: 300px;
+  word-wrap: break-word;
 }
 
-.logTitles th {
-  text-align: left;
+.logs th {
+  text-align: center;
   font-weight: bold;
-  border-left: thin solid black;
-  border-bottom: thin solid black;
+  border-left: thin solid lightgrey;
+  border-bottom: thin solid lightgrey;
+  padding: 5px;
 }
 
 </style>
