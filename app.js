@@ -893,7 +893,7 @@ function getLast100Logs (db, callback) {
         log.date = formatDate(log.date);
         return log;
       });
-      callback(err, result);
+      callback(err, logs);
     });
   });
 }
