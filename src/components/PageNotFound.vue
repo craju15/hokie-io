@@ -6,8 +6,9 @@
       <div class='not-found-message-0'>0</div>
       <div class='not-found-message-4'>4</div>
       <div>Page Not Found :(</div>
-      <p>Here is a picture of a cat anyways:</p>
-      <img src='./../assets/cat.jpg' />
+      <p>Here is a video of a cat climbing a rock wall:</p>
+      <!-- <img src='./../assets/cat.jpg' /> -->
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/ZA3iHurul9g?rel=0" frameborder="0" allowfullscreen></iframe>
     </div>
   </div>
 </template>

@@ -33,24 +33,26 @@ function setupExpress (db) {
   app.get('/getProfile/:userID', function (req, res) {
     findUser(req.params.userID, db, function (result) {
       if (result) {
-        res.send({
-          blockInfo: {
-            name: result.firstName + ' ' + result.lastName,
-            pic: result.pic,
-            hokieRank: result.hokieRank,
-            dateJoined: formatDate(result.dateJoined),
-            peopleReached: result.peopleReached
-          },
-          otherStats: {
-            totalQuestions: result.questions ? result.questions.length : -999,
-            totalAnswers: result.answers ? result.answers.length : -999,
-            totalQuestionUpvotes: -1,
-            totalAnswerUpvotes: -1
-          },
-          questionTags: [
-            {amt: '--', title: '--'},
-            {amt: '--', title: '--'}
-          ]
+        addToLog('getProfile', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+          res.send({
+            blockInfo: {
+              name: result.firstName + ' ' + result.lastName,
+              pic: result.pic,
+              hokieRank: result.hokieRank,
+              dateJoined: formatDate(result.dateJoined),
+              peopleReached: result.peopleReached
+            },
+            otherStats: {
+              totalQuestions: result.questions ? result.questions.length : -999,
+              totalAnswers: result.answers ? result.answers.length : -999,
+              totalQuestionUpvotes: -1,
+              totalAnswerUpvotes: -1
+            },
+            questionTags: [
+              {amt: '--', title: '--'},
+              {amt: '--', title: '--'}
+            ]
+          });
         });
       } else {
         res.send({
@@ -66,10 +68,12 @@ function setupExpress (db) {
       if (questionDoc) {
         questionDoc.date = formatDate(questionDoc.date);
         findAnswers(parseInt(req.params.questionID), db, function (answerObjects) {
-          res.send({
-            questionInfo: questionDoc,
-            answers: answerObjects
-          }); 
+          addToLog('getQuestionInfo', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+            res.send({
+              questionInfo: questionDoc,
+              answers: answerObjects
+            }); 
+          });
         });
       } else {
         res.send({err: 'Question not found!'}); 
@@ -83,7 +87,9 @@ function setupExpress (db) {
         result.date = formatDate(result.date);
         return result;
       });
-      res.send({results: results});
+      addToLog('getRecentQuestions', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+        res.send({results: results});
+      });
     });
   });
 
@@ -107,7 +113,9 @@ function setupExpress (db) {
           addNewAnswer(answerInfo, req.query.userID, parseInt(req.query.questionID), db, function (err, result) {
             answerInfo.date = formatDate(answerInfo.date);
             answerInfo.comments = [];
-            res.send({err: err, answerInfo: answerInfo});
+            addToLog('addAnswer', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+              res.send({err: err, answerInfo: answerInfo});
+            });
           });
         });
       } else {
@@ -129,7 +137,9 @@ function setupExpress (db) {
           commentInfo.name = userDoc.firstName + ' ' + userDoc.lastName;
           addNewComment(commentInfo, req.query.userID, parseInt(req.query.answerID), db, function (err, result) {
             commentInfo.date = formatDate(commentInfo.date);
-            res.send({err: err, commentInfo: commentInfo});
+            addToLog('addComment', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+              res.send({err: err, commentInfo: commentInfo});
+            });
           })
         });
       } else {
@@ -162,7 +172,9 @@ function setupExpress (db) {
           findUser(req.query.userID, db, function (userDoc) {
             questionInfo.name = userDoc.firstName + ' ' + userDoc.lastName;
             addNewQuestion(questionInfo, req.query.userID, db, function (err, result) {
-              res.send({err: err, questionInfo: questionInfo});
+              addToLog('addQuestion', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+                res.send({err: err, questionInfo: questionInfo});
+              });
             });
           });
         } else {
@@ -211,7 +223,9 @@ function setupExpress (db) {
             res.send({err: 'Email already in use!'});
           } else {
             addNewUser(userInfo, db, function (err, result) {
-              res.send({err: err, userInfo: userInfo});
+              addToLog('signup', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+                res.send({err: err, userInfo: userInfo});
+              });
             });
           }
         });
@@ -219,55 +233,55 @@ function setupExpress (db) {
     }
   });
 
-  app.get('/signup2', function (req, res) {
-    userInfo = {};
-    userInfo.email = req.query.email;
-    if (!userInfo.email || userInfo.email == '') {
-      res.send({err: 'Please enter your email!'});
-    } else if (!req.query.password || userInfo.password == '') {
-      res.send({err: 'Please enter a password!'});
-    } else if (req.query.password.length < 7) {
-      res.send({err: 'Password is too short!'});
-    } else if (!/@vt\.edu$/.test(userInfo.email)) {
-      res.send({err: 'Must use a "@vt.edu" email!'});
-    } else {
-    ax.get('https://webapps.middleware.vt.edu/peoplesearch/JsonSearch?query=' + userInfo.email)
-      .then(function (vtResults) {
-        if (vtResults.data.length != 1) {
-          res.send({err: 'Invalid Virginia Tech email!'});
-        } else {
-          userInfo.firstName = vtResults.data[0].givenName[0];
-          userInfo.lastName = vtResults.data[0].sn[0];
-          userInfo.major = vtResults.data[0].major;
-          // userID still must be checked in case it matches another person
-          userInfo.userID = (userInfo.firstName + '.' + userInfo.lastName).replace(/\s/g, '').toLowerCase();
-          // encrypt password
-          userInfo.enc_pass = sha256(req.query.password);
-          // add user init info
-          userInfo.dateJoined = new Date();
-          userInfo.hokieRank = 69;
-          userInfo.peopleReached = 0;
-          userInfo.pic = 'lightblue';
-          findUserArray(userInfo.userID, db, function (userDocs) {
-            // change userID if other people have to same name
-            if (userDocs.length != 0) {
-              userInfo.userID = userInfo.userID + (userDocs.length);
-            }
-            // check if email has been used
-            findUserByEmail(userInfo.email, db, function (err, results) {
-              if (results) {
-                res.send({err: 'Email already in use!'});
-              } else {
-                addNewUser(userInfo, db, function (err, result) {
-                  res.send({err: err, userInfo: userInfo});
-                });
-              }
-            });
-          });
-        }
-      });
-    }
-  });
+//  app.get('/signup2', function (req, res) {
+//    userInfo = {};
+//    userInfo.email = req.query.email;
+//    if (!userInfo.email || userInfo.email == '') {
+//      res.send({err: 'Please enter your email!'});
+//    } else if (!req.query.password || userInfo.password == '') {
+//      res.send({err: 'Please enter a password!'});
+//    } else if (req.query.password.length < 7) {
+//      res.send({err: 'Password is too short!'});
+//    } else if (!/@vt\.edu$/.test(userInfo.email)) {
+//      res.send({err: 'Must use a "@vt.edu" email!'});
+//    } else {
+//    ax.get('https://webapps.middleware.vt.edu/peoplesearch/JsonSearch?query=' + userInfo.email)
+//      .then(function (vtResults) {
+//        if (vtResults.data.length != 1) {
+//          res.send({err: 'Invalid Virginia Tech email!'});
+//        } else {
+//          userInfo.firstName = vtResults.data[0].givenName[0];
+//          userInfo.lastName = vtResults.data[0].sn[0];
+//          userInfo.major = vtResults.data[0].major;
+//          // userID still must be checked in case it matches another person
+//          userInfo.userID = (userInfo.firstName + '.' + userInfo.lastName).replace(/\s/g, '').toLowerCase();
+//          // encrypt password
+//          userInfo.enc_pass = sha256(req.query.password);
+//          // add user init info
+//          userInfo.dateJoined = new Date();
+//          userInfo.hokieRank = 69;
+//          userInfo.peopleReached = 0;
+//          userInfo.pic = 'lightblue';
+//          findUserArray(userInfo.userID, db, function (userDocs) {
+//            // change userID if other people have to same name
+//            if (userDocs.length != 0) {
+//              userInfo.userID = userInfo.userID + (userDocs.length);
+//            }
+//            // check if email has been used
+//            findUserByEmail(userInfo.email, db, function (err, results) {
+//              if (results) {
+//                res.send({err: 'Email already in use!'});
+//              } else {
+//                addNewUser(userInfo, db, function (err, result) {
+//                  res.send({err: err, userInfo: userInfo});
+//                });
+//              }
+//            });
+//          });
+//        }
+//      });
+//    }
+//  });
 
   app.get('/getSession', function (req, res) {
     // requires enc_password, email
@@ -277,10 +291,12 @@ function setupExpress (db) {
       verifyPassword(email, password, db, function (verified, userID) {
         if (verified) {
           createSession(email, db, function (sessionToken) {
-            res.send({
-              sessionToken: sessionToken,
-              verified: verified,
-              userID: userID
+            addToLog('getSession', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+              res.send({
+                sessionToken: sessionToken,
+                verified: verified,
+                userID: userID
+              });
             });
           });
         } else {
@@ -309,7 +325,9 @@ function setupExpress (db) {
         result.date = formatDate(result.date);
         return result;
       });
-      res.send({results: results});
+      addToLog('searchQuery', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+        res.send({err: err, results: results});
+      });
     });
   });
 
@@ -320,7 +338,9 @@ function setupExpress (db) {
       verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
         if (verified) {
           updateAmt('questions', questionID, change, req.query.email, db, function (err, results) {
-            res.send({err: err});
+            addToLog('updateQuestionAmt', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+              res.send({err: err});
+            });
           });
         } else {
           res.send({err: "Invalid session!"});
@@ -338,7 +358,9 @@ function setupExpress (db) {
       verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
         if (verified) {
           updateAmt('answers', answerID, change, req.query.email, db, function (err, results) {
-            res.send({err: err});
+            addToLog('updateAnswerAmt', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+              res.send({err: err});
+            });
           });
         } else {
           res.send({err: "Invalid session!"});
@@ -347,6 +369,16 @@ function setupExpress (db) {
     } else {
       res.send({err: "Invalid change amount!"});
     }
+  });
+
+  app.get('searchByCategory', function (req, res) {
+    getSearchResultsByCategory(req.query.category, db, function (error, results) {
+      results.map(function (result) {
+        result.date = formatDate(result.date);
+        return result;
+      });
+      res.send({results: results});
+    });
   });
 
   app.get('/changeProfilePic', function (req, res) {
@@ -366,12 +398,19 @@ function setupExpress (db) {
   // file to all other routes. That way, route handling
   // can be done with the front end
   app.get('/*', function (req, res) {
-    res.sendFile(__dirname + '/dist/index.html');
+    addToLog('initial', req.get('host') + req.originalUrl, null, null, db, function (err) {
+      if (!err) {
+        res.sendFile(__dirname + '/dist/index.html');
+      } else {
+        res.send({err: err})
+      }
+    });
   });
 
   app.listen(port, function () {
     console.log("Magic is happening on port " + port);
   });
+
 }
 
 function findUser (userID, db, callback) {
@@ -421,6 +460,8 @@ function formatDate (dateObj) {
   if (!dateObj) {
     return undefined;
   }
+  // convert to local VT time (-4 hours)
+  dateObj.setMinutes(dateObj.getMinutes() - 240);
   var currentDate = new Date();
   var months = [
     'January', 'February', 'March',
@@ -797,9 +838,34 @@ function getSearchResults (query, db, callback) {
     });
 }
 
+function getSearchResultsByCategory (category, db, callback) {
+  var questions = db.collection('questions');
+  questions
+    .count(function (error, numberOfQuestions) {
+      questions
+        .find({category: category, _id: {$gt: numberOfQuestions - 30}})
+        .toArray(function (error, results) {
+          callback(error, results);
+        });
+    });
+}
+
 function updateProfilePic (email, url, db, callback) {
   db.collection('users')
     .update({email: email}, {$set: {pic: url}}, function (err, result) {
       callback(err);
+    });
+}
+
+function addToLog (logName, logInfo, email, userID, db, callback) {
+  db.collection('logs')
+    .insert({
+      name: logName, 
+      info: logInfo, 
+      time: new Date(),
+      email: email,
+      userID: userID
+    }, function (err, result) {
+      callback(err, result)
     });
 }

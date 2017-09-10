@@ -9,6 +9,7 @@ import About from '@/components/About'
 import NewQuestion from '@/components/NewQuestion'
 import Signup from '@/components/Signup'
 import Search from '@/components/Search'
+import Categories from '@/components/Categories'
 
 Vue.use(Router)
 
@@ -47,9 +48,14 @@ export default new Router({
       component: Signup
     },
     {
-      path: '/search/:query',
+      path: '/search/:type/:query',
       name: 'Search',
       component: Search
+    },
+    {
+      path: '/categories',
+      name: 'Categories',
+      component: Categories
     },
     {
       path: '/',

@@ -48,7 +48,8 @@
       return {
         linksLeft: [
           {title: 'recent', target: '/'},
-          {title: 'about', target: '/about'}
+          {title: 'about', target: '/about'},
+          {title: 'categories', target: '/categories'}
         ],
         searchBarStyles: {},
         linksStyles: {},
@@ -84,7 +85,7 @@
       onSearchBarBlur () {
         setTimeout(() => {
           this.searchBarStyles = {
-            left: '150px', width: '150px'
+            left: '230px', width: '150px'
           }
           this.linksStyles = {
             opacity: '1'
@@ -117,7 +118,7 @@
         e.preventDefault()
         e.target.elements['searchbar'].blur()
         console.log(e.target.elements['searchbar'].value)
-        this.$router.push({'path': '/search/' + e.target.elements['searchbar'].value})
+        this.$router.push({'path': '/search/query/' + e.target.elements['searchbar'].value})
       }
     }
   }
@@ -208,7 +209,7 @@
   .search-bar {
     height: 40px;
     width: 150px;
-    left: 150px;
+    left: 230px;
     top: 5px;
     position: absolute;
     transition: all 0.15s ease-out 0s;
