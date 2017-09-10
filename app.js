@@ -33,7 +33,7 @@ function setupExpress (db) {
   app.get('/getProfile/:userID', function (req, res) {
     findUser(req.params.userID, db, function (result) {
       if (result) {
-        addToLog('getProfile', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+        addToLog('getProfile', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
           res.send({
             blockInfo: {
               name: result.firstName + ' ' + result.lastName,
@@ -68,7 +68,7 @@ function setupExpress (db) {
       if (questionDoc) {
         questionDoc.date = formatDate(questionDoc.date);
         findAnswers(parseInt(req.params.questionID), db, function (answerObjects) {
-          addToLog('getQuestionInfo', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+          addToLog('getQuestionInfo', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
             res.send({
               questionInfo: questionDoc,
               answers: answerObjects
@@ -87,7 +87,7 @@ function setupExpress (db) {
         result.date = formatDate(result.date);
         return result;
       });
-      addToLog('getRecentQuestions', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+      addToLog('getRecentQuestions', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
         res.send({results: results});
       });
     });
@@ -113,7 +113,7 @@ function setupExpress (db) {
           addNewAnswer(answerInfo, req.query.userID, parseInt(req.query.questionID), db, function (err, result) {
             answerInfo.date = formatDate(answerInfo.date);
             answerInfo.comments = [];
-            addToLog('addAnswer', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+            addToLog('addAnswer', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
               res.send({err: err, answerInfo: answerInfo});
             });
           });
@@ -137,7 +137,7 @@ function setupExpress (db) {
           commentInfo.name = userDoc.firstName + ' ' + userDoc.lastName;
           addNewComment(commentInfo, req.query.userID, parseInt(req.query.answerID), db, function (err, result) {
             commentInfo.date = formatDate(commentInfo.date);
-            addToLog('addComment', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+            addToLog('addComment', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
               res.send({err: err, commentInfo: commentInfo});
             });
           })
@@ -172,7 +172,7 @@ function setupExpress (db) {
           findUser(req.query.userID, db, function (userDoc) {
             questionInfo.name = userDoc.firstName + ' ' + userDoc.lastName;
             addNewQuestion(questionInfo, req.query.userID, db, function (err, result) {
-              addToLog('addQuestion', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+              addToLog('addQuestion', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
                 res.send({err: err, questionInfo: questionInfo});
               });
             });
@@ -223,7 +223,7 @@ function setupExpress (db) {
             res.send({err: 'Email already in use!'});
           } else {
             addNewUser(userInfo, db, function (err, result) {
-              addToLog('signup', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+              addToLog('signup', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
                 res.send({err: err, userInfo: userInfo});
               });
             });
@@ -291,7 +291,7 @@ function setupExpress (db) {
       verifyPassword(email, password, db, function (verified, userID) {
         if (verified) {
           createSession(email, db, function (sessionToken) {
-            addToLog('getSession', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+            addToLog('getSession', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
               res.send({
                 sessionToken: sessionToken,
                 verified: verified,
@@ -325,7 +325,7 @@ function setupExpress (db) {
         result.date = formatDate(result.date);
         return result;
       });
-      addToLog('searchQuery', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+      addToLog('searchQuery', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
         res.send({err: err, results: results});
       });
     });
@@ -338,7 +338,7 @@ function setupExpress (db) {
       verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
         if (verified) {
           updateAmt('questions', questionID, change, req.query.email, db, function (err, results) {
-            addToLog('updateQuestionAmt', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+            addToLog('updateQuestionAmt', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
               res.send({err: err});
             });
           });
@@ -358,7 +358,7 @@ function setupExpress (db) {
       verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
         if (verified) {
           updateAmt('answers', answerID, change, req.query.email, db, function (err, results) {
-            addToLog('updateAnswerAmt', req.get('host') + req.originalUrl, req.params.email, req.params.userID, db, function (err) {
+            addToLog('updateAnswerAmt', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
               res.send({err: err});
             });
           });
