@@ -55,7 +55,9 @@
           this.pageTitle = 'Search by category: ' + this.$route.params.query
         } else if (this.$route.params.type === 'query') {
           this.pageTitle = 'Search results for: ' + this.$route.params.query
-          ax.get(window.backend_url + '/getSearchResults/' + this.$route.params.query)
+          ax.get(window.backend_url + '/getSearchResults/' + this.$route.params.query +
+            '?userID=' + window.getCookie('userID') +
+            '&email=' + window.getCookie('email'))
             .then((response) => {
               _this.results = response.data.results
             })

@@ -81,7 +81,8 @@
       },
       getQuestion () {
         ax.get(window.backend_url + '/getQuestionInfo/' + this.$route.params.questionID +
-          '/?email=' + window.getCookie('email'))
+          '/?email=' + window.getCookie('email') +
+          '&userID=' + window.getCookie('userID'))
           .then((response) => {
             let email = window.getCookie('email')
             let questionVoteState = 0

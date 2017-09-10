@@ -99,7 +99,9 @@
     methods: {
       getProfile () {
         let _this = this
-        ax.get(window.backend_url + '/getProfile/' + this.$route.params.userID)
+        ax.get(window.backend_url + '/getProfile/' + this.$route.params.userID +
+          '?email=' + window.getCookie('email') +
+          '&userID=' + window.getCookie('userID'))
           .then((response) => {
             if (!response.data.error) {
               _this.blockInfo = response.data.blockInfo
