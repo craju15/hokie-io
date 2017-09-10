@@ -382,7 +382,6 @@ function setupExpress (db) {
   });
 
   app.get('/changeProfilePic', function (req, res) {
-    var url = req.query.url;
     verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
       if (verified) {
         updateProfilePic(req.query.email, req.query.url, db, function (err) {
@@ -391,6 +390,12 @@ function setupExpress (db) {
       } else {
         res.send({err: "Invalid session!"});
       }
+    });
+  });
+
+  app.get('/visitedNewQuestionPage', function (req, res) {
+    addToLog('visitedNewQuestionPage', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
+      res.send({err: err});
     });
   });
 

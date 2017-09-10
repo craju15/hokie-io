@@ -72,6 +72,9 @@
         theme: 'snow'
       }
       this.editor = new Quill('.editor', editorOptions)
+      ax.get(window.backend_url + '/visitedNewQuestionPage' +
+        '?userID=' + window.getCookie('userID') +
+        '&email=' + window.getCookie('email'))
     },
     methods: {
       showModal (e) {
