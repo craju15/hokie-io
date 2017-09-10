@@ -888,11 +888,14 @@ function addToLog (logName, logInfo, email, userID, db, callback) {
 function getLast100Logs (db, callback) {
   var logs = db.collection('logs');
   logs.count(function (error, amt) {
-    logs.find({_id: {$gt: amt - 100}}).toArray(function (err, logs) {
-      logs.forEach(function (log) {
-        log.time = formatDate(log.time);
-        return log;
-      });
+    logs
+      .find({_id: {$gt: amt - 100}})
+      .sort({_id: -1})
+      .toArray(function (err, logs) {
+        logs.forEach(function (log) {
+          log.time = formatDate(log.time);
+          return log;
+        });
       callback(err, logs);
     });
   });
