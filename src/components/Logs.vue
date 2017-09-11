@@ -3,6 +3,7 @@
      <div class='header-space'></div>
      <table class='logs'>
        <tr>
+         <th>#</th>
          <th>time</th>
          <th>email</th>
          <th>name</th>
@@ -10,6 +11,7 @@
          <!-- <th>userID</th> -->
        </tr>
        <tr v-for='log in logs'>
+         <td> {{ log._id }} </td>
          <td> {{ log.time }} </td>
          <td> {{ log.email ? log.email : 'X' }} </td>
          <td> {{ log.name }} </td>
