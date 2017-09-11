@@ -400,9 +400,11 @@ function setupExpress (db) {
   });
 
   app.get('/getLast100Logs', function (res, res) {
-    getLast100Logs(db, function (err, result) {
-      res.send({result: result});
-    });
+    if (req.query.userID === 'jacob.merizian') {
+      getLast100Logs(db, function (err, result) {
+        res.send({result: result});
+      });
+    }
   });
 
   // This is a catch all which serves the index.html
