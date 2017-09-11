@@ -34,11 +34,16 @@ export default {
   },
   mounted () {
     let _this = this
-    ax.get('https://hokie.io' + '/getLast100Logs')
-      .then(function (result) {
-        let logs = result.data.result
-        _this.logs = logs
-      })
+    let t = setInterval(function () {
+      ax.get('https://hokie.io' + '/getLast100Logs')
+        .then(function (result) {
+          let logs = result.data.result
+          _this.logs = logs
+          if (_this.$route.path !== '/logs') {
+            clearInterval(t)
+          }
+        })
+    }, 500)
   }
 }
 </script>
