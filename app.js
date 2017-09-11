@@ -400,7 +400,7 @@ function setupExpress (db) {
   });
 
   app.get('/getLast100Logs', function (req, res) {
-    if (req.query.userID === 'jacob.merizian') {
+    if (req.query.userID == 'jacob.merizian') {
       getLast100Logs(db, function (err, result) {
         res.send({result: result});
       });
