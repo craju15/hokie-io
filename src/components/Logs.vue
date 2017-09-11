@@ -36,7 +36,7 @@ export default {
     let _this = this
     let t = setInterval(function () {
       ax.get('https://hokie.io' + '/getLast100Logs' +
-        '?userID=' + window.getCookie('userId'))
+        '?userID=' + window.getCookie('userID'))
         .then(function (result) {
           if (result.data.err) {
             clearInterval(t)
