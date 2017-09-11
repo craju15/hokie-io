@@ -39,6 +39,7 @@ export default {
         '?userID=' + window.getCookie('userID'))
         .then(function (result) {
           if (result.data.err) {
+            window.notify(null, result.data.err)
             clearInterval(t)
           } else {
             let logs = result.data.result
