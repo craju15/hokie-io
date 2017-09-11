@@ -404,6 +404,8 @@ function setupExpress (db) {
       getLast100Logs(db, function (err, result) {
         res.send({result: result});
       });
+    } else {
+      res.send({err: "You don't have access to this page!"});
     }
   });
 

@@ -38,10 +38,14 @@ export default {
       ax.get('https://hokie.io' + '/getLast100Logs' +
         '?userID=' + window.getCookie('userId'))
         .then(function (result) {
-          let logs = result.data.result
-          _this.logs = logs
-          if (_this.$route.path !== '/logs') {
+          if (result.data.err) {
             clearInterval(t)
+          } else {
+            let logs = result.data.result
+            _this.logs = logs
+            if (_this.$route.path !== '/logs') {
+              clearInterval(t)
+            }
           }
         })
     }, 500)
