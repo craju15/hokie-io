@@ -291,7 +291,8 @@ function setupExpress (db) {
       verifyPassword(email, password, db, function (verified, userID) {
         if (verified) {
           createSession(email, db, function (sessionToken) {
-            addToLog('getSession', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
+            var censoredUrl = req.originalUrl.substring(0, req.originalUrl.indexOf('&password=')) + '***';
+            addToLog('getSession', req.get('host') + censoredUrl, req.query.email, req.query.userID, db, function (err) {
               res.send({
                 sessionToken: sessionToken,
                 verified: verified,
