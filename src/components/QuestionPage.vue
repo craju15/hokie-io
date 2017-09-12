@@ -1,24 +1,24 @@
 <template>
   <div class='content-container'>
-    <Notification ref='notification'/>
-    <div class='header-space'></div>
-      <router-link to='#' class='go-back' style='display: none;'>go back</router-link>
-      <Question :info='questionInfo' :showNewAnswer='showNewAnswer' :isLoggedIn='isLoggedIn'/>
-      <div class='section-title'>Answers:</div>
-      <Answer 
-        v-for='(answer, index) in answers' 
-        :info='answer'
-        :delay='(index + 1) * 50'
-        :key='index'
-        :isLoggedIn='isLoggedIn'
-      />
-      <div class='no-answers-yet-message' v-if='answers.length == 0'>no answers yet :(</div>
-      <NewAnswer
-        :style='styleNewAnswer'
-        :hideNewAnswer='hideNewAnswer'
-        :postNewAnswerHandler='postNewAnswerHandler'
-      />
-    </div>
+  <Notification ref='notification'/>
+  <div class='header-space'></div>
+  <SideAd />
+  <router-link to='#' class='go-back' style='display: none;'>go back</router-link>
+  <Question :info='questionInfo' :showNewAnswer='showNewAnswer' :isLoggedIn='isLoggedIn'/>
+  <div class='section-title'>Answers:</div>
+    <Answer 
+      v-for='(answer, index) in answers' 
+      :info='answer'
+      :delay='(index + 1) * 50'
+      :key='index'
+      :isLoggedIn='isLoggedIn'
+    />
+    <div class='no-answers-yet-message' v-if='answers.length == 0'>no answers yet :(</div>
+    <NewAnswer
+      :style='styleNewAnswer'
+      :hideNewAnswer='hideNewAnswer'
+      :postNewAnswerHandler='postNewAnswerHandler'
+    />
   </div>
 </template>
 
@@ -27,6 +27,7 @@
   import Answer from '@/components/parts/Answer'
   import NewAnswer from '@/components/parts/NewAnswer'
   import Notification from '@/components/parts/Notification'
+  import SideAd from '@/components/parts/SideAd'
   import ax from 'axios'
 
   export default {
@@ -36,7 +37,8 @@
       Question,
       Answer,
       NewAnswer,
-      Notification
+      Notification,
+      SideAd
     },
     methods: {
       hideNewAnswer (e) {

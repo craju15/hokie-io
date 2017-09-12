@@ -88,19 +88,23 @@
       newQuestionHandler (e) {
         e ? e.preventDefault() : ''
         let _this = this
-        ax.get(window.backend_url + '/addNewQuestion/?' +
-          'title=' + this.$el.querySelector('input').value +
-          '&body=' + this.$el.querySelector('.editor').childNodes[0].innerHTML +
-          '&userID=' + window.getCookie('userID') +
-          '&email=' + window.getCookie('email') +
-          '&sessionToken=' + window.getCookie('sessionToken')
-        ).then(function (result) {
-          if (result.data.err) {
-            window.notify(_this, result.data.err)
-          } else {
-            _this.$router.push({path: '/question/' + result.data.questionInfo._id})
-          }
-        })
+        if (this.$el.querySelector('.editor').childNodes[0].innerHTML === '<p><br></p>') {
+          window.notify(null, 'Please include a body!')
+        } else {
+          ax.get(window.backend_url + '/addNewQuestion/?' +
+            'title=' + this.$el.querySelector('input').value +
+            '&body=' + this.$el.querySelector('.editor').childNodes[0].innerHTML +
+            '&userID=' + window.getCookie('userID') +
+            '&email=' + window.getCookie('email') +
+            '&sessionToken=' + window.getCookie('sessionToken')
+          ).then(function (result) {
+            if (result.data.err) {
+              window.notify(_this, result.data.err)
+            } else {
+              _this.$router.push({path: '/question/' + result.data.questionInfo._id})
+            }
+          })
+        }
       }
     }
   }
