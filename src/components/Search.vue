@@ -55,7 +55,7 @@
         '?group=' + _this.$route.params.query +
         '&email=' + window.getCookie('email'))
           .then(function (response) {
-            console.log(response.data)
+            console.log(response)
             // _this.recentResults = response.data.results
           })
           .catch(function (error) {

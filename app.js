@@ -386,13 +386,13 @@ function setupExpress (db) {
     }
   });
 
-  app.get('searchQuestionsByGroup', function (req, res) {
+  app.get('/searchQuestionsByGroup', function (req, res) {
     getSearchResultsByGroup(req.query.group, db, function (error, results) {
       results.map(function (result) {
         result.date = formatDate(result.date);
         return result;
       });
-      res.send({results: 'hello world!'});
+      res.send({results: results});
     });
   });
 
