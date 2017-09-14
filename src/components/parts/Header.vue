@@ -49,7 +49,7 @@
         linksLeft: [
           {title: 'recent', target: '/'},
           {title: 'about', target: '/about'},
-          {title: 'categories', target: '/categories'}
+          {title: 'courses', target: '/groups'}
         ],
         searchBarStyles: {},
         linksStyles: {},

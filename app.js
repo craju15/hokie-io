@@ -406,6 +406,12 @@ function setupExpress (db) {
     });
   });
 
+  app.get('/getGroups', function (req, res) {
+    getGroups(req.query.courses, db, function (err) {
+      res.send({err: err});
+    });
+  });
+
   app.get('/visitedNewQuestionPage', function (req, res) {
     addToLog('visitedNewQuestionPage', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
       res.send({err: err});
@@ -931,4 +937,17 @@ function getPopularQuestions (db, callback) {
         }
     });
   });
+}
+
+function getGroups (courses, db, callback) {
+  var groups = db.collection('groups')
+  groups
+    .find()
+    .toArray(function (err, results) {
+      if (!err) {
+        callback(results);
+      } else {
+        console.error(err);
+      }
+    });
 }
