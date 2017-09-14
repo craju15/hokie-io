@@ -932,7 +932,7 @@ function getPopularQuestions (db, callback) {
     questionCollection
       .find()
       .sort({amt: -1})
-      .limit(numberOfQuestions + questions_offset - 6)
+      .limit(6)
       .toArray(function (err, results) {
         if (!err) {
           callback(results);
