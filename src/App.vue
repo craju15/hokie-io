@@ -300,8 +300,8 @@
   .load-more-button {
     opacity: 0;
     display: block;
-    line-height: 24px;
-    height: 24px;
+    line-height: 15px;
+    height: 15px;
     padding: 8px;
     color: white;
     font-weight: bold; 

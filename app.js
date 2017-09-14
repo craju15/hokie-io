@@ -16,6 +16,8 @@ var port = 3010;
 
 var browser_code = sha256('apples');
 
+var questions_offset = 4;
+
 MongoClient.connect(url, function (err, db) {
   if (!err) {
     console.log("Connected to MongoDB server.");
@@ -480,7 +482,7 @@ function findUserArray (userID, db, callback) {
 function getRecentQuestions (db, callback) {
   var questionCollection = db.collection('questions');
   questionCollection.count(function (error, numberOfQuestions) {
-    questionCollection.find({_id: {$gt: numberOfQuestions - 2}})
+    questionCollection.find({_id: {$gt: numberOfQuestions + questions_offset - 6}})
       .sort({_id: -1}).toArray(function (err, results) {
       if (!err) {
         callback(results);
@@ -928,8 +930,10 @@ function getPopularQuestions (db, callback) {
   var questionCollection = db.collection('questions');
   questionCollection.count(function (error, numberOfQuestions) {
     questionCollection
-      .find({_id: {$gt: numberOfQuestions - 30}})
-      .sort({amt: 1}).toArray(function (err, results) {
+      .find()
+      .sort({amt: -1})
+      .limit(numberOfQuestions + questions_offset - 6)
+      .toArray(function (err, results) {
         if (!err) {
           callback(results);
         } else {

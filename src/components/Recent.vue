@@ -3,13 +3,20 @@
     <div class='header-space'></div>
     <div class='big-title'>Recent Questions</div>
     <QuestionListItem
-      v-for='(result, index) in results'
+      v-for='(result, index) in recentResults'
       :info='result'
-      :delay='(index + 1) * 50'
+      :delay='(index + 1) * 1'
       :key='index'
     />
-    <a class='load-more-button' style='display:none;'>load more</a>
-    </div>
+    <a class='load-more-button'>see more</a>
+    <div class='big-title'>Popular Questions</div>
+    <QuestionListItem
+      v-for='(result, index) in popularResults'
+      :info='result'
+      :delay='(index + 1) * 1'
+      :key='index'
+    />
+    <a class='load-more-button'>see more</a>
   </div>
 </template>
 
@@ -24,23 +31,23 @@
     },
     data () {
       return {
-        results: [
-          {
-            _id: 1,
-            title: '-',
-            name: 'Jacob Merizian',
-            userID: 'jacob.merizian',
-            date: '-',
-            amt: 0
-          },
-          {
-            _id: 1,
-            title: '-',
-            name: 'Jacob Merizian',
-            userID: 'jacob.merizian',
-            date: '-',
-            amt: 0
-          }
+        recentResults: [
+//          {
+//            _id: 1,
+//            title: '-',
+//            name: 'Jacob Merizian',
+//            userID: 'jacob.merizian',
+//            date: '-',
+//            amt: 0
+//          },
+//          {
+//            _id: 1,
+//            title: '-',
+//            name: 'Jacob Merizian',
+//            userID: 'jacob.merizian',
+//            date: '-',
+//            amt: 0
+//          }
         ]
       }
     },
@@ -49,10 +56,19 @@
       ax.get(window.backend_url + '/getRecentQuestions/' +
       '?email=' + window.getCookie('email'))
         .then((response) => {
-          _this.results = response.data.results
+          _this.recentResults = response.data.results
         })
         .catch((error) => {
           window.notify(_this, error)
+        })
+
+      ax.get(window.backend_url + '/getPopularQuestions/' +
+      '?email=' + window.getCookie('email'))
+        .then((response) => {
+          _this.popularResults = response.data.results
+        })
+        .catch((error) => {
+          window.notify(null, error)
         })
     }
   }

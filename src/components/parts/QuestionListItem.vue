@@ -29,11 +29,13 @@
     opacity: 0;
     background-color: #eee;
     padding: 10px;
+    padding-bottom: 3px;
+    padding-top: 3px;
     width: 95%;
     margin: 0 auto;
     position: relative;
     display: flex;
-    margin-bottom: 7px;
+    margin-bottom: 5px;
     animation: 0.3s ease-out 1 slideIn forwards;
   }
 
@@ -77,7 +79,7 @@
 
   .list-item-qa-person-info {
     position: absolute;
-    bottom: 10px;
+    bottom: 6px;
     left: 60px;
   }
 
