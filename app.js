@@ -943,7 +943,7 @@ function getPopularQuestions (db, callback) {
   });
 }
 
-function getMajors (courses, db, callback) {
+function getMajors (db, callback) {
   var majors = db.collection('majors')
   majors
     .find()
