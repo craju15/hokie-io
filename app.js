@@ -346,7 +346,7 @@ function setupExpress (db) {
     });
   });
 
-  app.get('/searchQuestionsByGroup/', function (req, res) {
+  app.get('/getSearchResultsByGroup/', function (req, res) {
     getSearchResultsByGroup(req.query.group, db, function (error, results) {
       results.map(function (result) {
         result.date = formatDate(result.date);
@@ -408,8 +408,8 @@ function setupExpress (db) {
     });
   });
 
-  app.get('/getGroups', function (req, res) {
-    getGroups(req.query.courses, db, function (results) {
+  app.get('/getMajors', function (req, res) {
+    getMajors(db, function (results) {
       res.send({results: results});
     });
   });
@@ -943,9 +943,9 @@ function getPopularQuestions (db, callback) {
   });
 }
 
-function getGroups (courses, db, callback) {
-  var groups = db.collection('groups')
-  groups
+function getMajors (courses, db, callback) {
+  var majors = db.collection('majors')
+  majors
     .find()
     .toArray(function (err, results) {
       if (!err) {

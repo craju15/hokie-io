@@ -51,7 +51,7 @@
       // check what the type is from the url
       if (_this.$route.params.type === 'groups') {
         _this.pageTitle = 'Search by category: ' + _this.$route.params.query
-        ax.get(window.backend_url + '/searchQuestionsByGroup' +
+        ax.get(window.backend_url + '/getSearchResultsByGroup' +
         '?group=' + _this.$route.params.query +
         '&email=' + window.getCookie('email'))
           .then(function (response) {

@@ -13,13 +13,20 @@
       <div class='section-title'>Virginia Tech Email:</div>
       <input name='email' type='text' class='form-input'/>
 
+      <div class='section-title'>major:</div>
+      <select name='major' type='text' class='form-input'>
+        <option v-for='majorOption in majorOptions' :value='majorOption._id'>
+          {{ majorOption._id + ': ' + majorOption.title }}
+        </option>
+      </select>
+
       <div class='section-title'>New Password:</div>
       <input name='password' type='password' class='form-input'/>
 
       <div class='section-title'>Confirm Password:</div>
       <input name='confimpassword' type='password' class='form-input'/>
 
-      <div id='recaptcha' class="g-recaptcha" data-sitekey="6LcxFSsUAAAAANMVh5tgNeiVqBBk2Xucwumlfwc1"></div>
+      <!-- <div id='recaptcha' class="g-recaptcha" data-sitekey="6LcxFSsUAAAAANMVh5tgNeiVqBBk2Xucwumlfwc1"></div> -->
 
       <button type='submit'>sign up</button>
     </form>
@@ -36,11 +43,26 @@
     components: {
       Notification
     },
+    data () {
+      return {
+        majorOptions: []
+      }
+    },
     mounted () {
-      grecaptcha.render('recaptcha', {
-        sitekey: '6LcxFSsUAAAAANMVh5tgNeiVqBBk2Xucwumlfwc1',
-        theme: 'light'
-      })
+      let _this = this
+      // grecaptcha.render('recaptcha', {
+      //   sitekey: '6LcxFSsUAAAAANMVh5tgNeiVqBBk2Xucwumlfwc1',
+      //   theme: 'light'
+      // })
+
+      ax.get(window.backend_url + '/getMajors' +
+      '?email=' + window.getCookie('email'))
+        .then(function (response) {
+          _this.majorOptions = response.data.results
+        })
+        .catch(function (error) {
+          window.notify(null, error)
+        })
     },
     methods: {
       handleSignUp (e) {

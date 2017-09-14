@@ -21,7 +21,7 @@
         <a class='load-more-button'>see more</a>
       </div>
       <div class='home-right-side'>
-        <div class='medium-title'>Find your class:</div>
+        <div class='medium-title'>Find your major:</div>
       </div>
     </div>
   </div>
