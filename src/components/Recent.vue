@@ -1,22 +1,29 @@
 <template>
   <div class='content-container'>
     <div class='header-space'></div>
-    <div class='big-title'>Recent Questions</div>
-    <QuestionListItem
-      v-for='(result, index) in recentResults'
-      :info='result'
-      :delay='(index + 1) * 1'
-      :key='index'
-    />
-    <a class='load-more-button'>see more</a>
-    <div class='big-title'>Popular Questions</div>
-    <QuestionListItem
-      v-for='(result, index) in popularResults'
-      :info='result'
-      :delay='(index + 1) * 1'
-      :key='index'
-    />
-    <a class='load-more-button'>see more</a>
+    <div class='home-container'>
+      <div class='home-left-side'>
+        <div class='big-title'>Recent Questions</div>
+        <QuestionListItem
+          v-for='(result, index) in recentResults'
+          :info='result'
+          :delay='(index + 1) * 1'
+          :key='index'
+        />
+        <a class='load-more-button'>see more</a>
+        <div class='big-title'>Popular Questions</div>
+        <QuestionListItem
+          v-for='(result, index) in popularResults'
+          :info='result'
+          :delay='(index + 1) * 1'
+          :key='index'
+        />
+        <a class='load-more-button'>see more</a>
+      </div>
+      <div class='home-right-side'>
+        <div class='medium-title'>Find your class:</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -48,7 +55,8 @@
 //            date: '-',
 //            amt: 0
 //          }
-        ]
+        ],
+        popularResults: []
       }
     },
     mounted () {
@@ -74,3 +82,17 @@
   }
 </script>
 
+<style>
+.home-container {
+  display: flex;
+}
+
+.home-left-side {
+  flex: 0.7;
+}
+
+.home-right-side {
+  padding-top: 20px;
+  flex: 0.3;
+}
+</style>

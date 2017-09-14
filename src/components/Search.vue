@@ -3,12 +3,12 @@
     <div class='header-space'></div>
     <div class='big-title'>{{ pageTitle }}</div>
     <QuestionListItem
-      v-for='(result, index) in results'
+      v-for='(result, index) in recentResults'
       :info='result'
       :delay='(index + 1) * 50'
       :key='index'
     />
-    <div class='no-answers-yet-message' v-if='results.length == 0'>no results found :(</div>
+    <div class='no-answers-yet-message' v-if='recentResults.length == 0'>no results found :(</div>
     <a class='load-more-button' style='display:none;'>load more</a>
     </div>
   </div>
@@ -25,7 +25,7 @@
     },
     data () {
       return {
-        results: [
+        recentResults: [
 //          {
 //            _id: 1,
 //            title: '-',
@@ -46,34 +46,33 @@
         pageTitle: 'Search Results'
       }
     },
-    methods: {
-      mounted () {
-        let _this = this
-        // check what the type is from the url
-        if (this.$route.params.type === 'groups') {
-          this.pageTitle = 'Search by category: ' + this.$route.params.query
-          ax.get(window.backend_url + '/getQuestionsByGroup' +
-          '?group=' + this.$route.params.query +
+    mounted () {
+      let _this = this
+      // check what the type is from the url
+      if (_this.$route.params.type === 'groups') {
+        _this.pageTitle = 'Search by category: ' + _this.$route.params.query
+        ax.get(window.backend_url + '/searchQuestionsByGroup/' +
+        '?group=' + _this.$route.params.query +
+        '&email=' + window.getCookie('email'))
+          .then(function (response) {
+            console.log(response.data)
+            // _this.recentResults = response.data.results
+          })
+          .catch(function (error) {
+            window.notify(null, error)
+          })
+      } else if (this.$route.params.type === 'query') {
+        this.pageTitle = 'Search results for: ' + this.$route.params.query
+        ax.get(window.backend_url + '/getSearchResults/' + this.$route.params.query +
+          '?userID=' + window.getCookie('userID') +
           '&email=' + window.getCookie('email'))
-            .then(function (response) {
-              _this.results = response.data.results
-            })
-            .catch(function (error) {
-              window.notify(null, error)
-            })
-        } else if (this.$route.params.type === 'query') {
-          this.pageTitle = 'Search results for: ' + this.$route.params.query
-          ax.get(window.backend_url + '/getSearchResults/' + this.$route.params.query +
-            '?userID=' + window.getCookie('userID') +
-            '&email=' + window.getCookie('email'))
-            .then(function (response) {
-              _this.results = response.data.results
-            })
-            .catch(function (error) {
-              console.log(error)
-              window.notify(_this, error)
-            })
-        }
+          .then(function (response) {
+            _this.recentResults = response.data.results
+          })
+          .catch(function (error) {
+            console.log(error)
+            window.notify(_this, error)
+          })
       }
     }
   }

@@ -17,8 +17,7 @@
           <a class='cancel-button' v-on:click='hideModal'>Cancel</a>
         </div>
       </div>
-      <p style='text-align: center; background-color: yellow; opacity: 0.3'>this section is under construction:</p>
-      <div class='profile-bottom' style='background-color: grey; opacity: 0.3;'>
+      <div class='profile-bottom' style='background-color: grey; display: none;'>
         <div class='profile-questions'>
           <div class='section-title'>Questions</div>
           <div class='profile-qa-block'>

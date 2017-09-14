@@ -163,7 +163,7 @@
   }
 
   .container {
-    max-width: 750px;
+    max-width: 1100px;
     margin: 0 auto;
     display: flex;
     padding-left: 10px;
@@ -311,7 +311,7 @@
     font-size: 18px;
     margin: 0 auto;
     position: relative;
-    animation: 0.3s ease-out 1 slideIn 1s forwards;
+    animation: 0.3s ease-out 1 slideIn 0.3s forwards;
   }
 
   .load-more-button:hover {
@@ -325,6 +325,13 @@
 
   .big-title {
     font-size: 23px;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .medium-title {
+    font-size: 20px;
     font-weight: bold;
     margin-left: 20px;
     margin-bottom: 10px;

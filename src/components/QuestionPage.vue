@@ -2,7 +2,6 @@
   <div class='content-container'>
   <Notification ref='notification'/>
   <div class='header-space'></div>
-  <SideAd />
   <router-link to='#' class='go-back' style='display: none;'>go back</router-link>
   <Question :info='questionInfo' :showNewAnswer='showNewAnswer' :isLoggedIn='isLoggedIn'/>
   <div class='section-title'>Answers:</div>

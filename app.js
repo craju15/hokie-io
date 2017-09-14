@@ -392,7 +392,7 @@ function setupExpress (db) {
         result.date = formatDate(result.date);
         return result;
       });
-      res.send({results: results});
+      res.send({results: 'hello world!'});
     });
   });
 
