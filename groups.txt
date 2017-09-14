@@ -1,128 +1,128 @@
-AAEC=Agricultural and Applied Economics
-ACIS=Accounting and Information Systems
-AFST=Africana Studies
-AHRM=Apparel, Housing, and Resource Management
-AINS=American Indian Studies
-ALCE=Agricultural, Leadership, and Community Education
-ALS=Agriculture and Life Sciences
-AOE=Aerospace and Ocean Engineering
-APS=Appalachian Studies
-APSC=Animal and Poultry Sciences
-ARBC=Arabic
-ARCH=Architecture
-ART=Art and Art History
-AS=Aerospace Studies (AFROTC)
-AT=Agricultural Technology
-BC=Building Construction
-BCHM=Biochemistry
-BIOL=Biological Sciences
-BIT=Business Information Technology
-BMES=Biomedical Engineering and Sciences
-BMSP=Biomedical Sciences and Pathobiology
-BMVS=Biomedical & Veterinary Sciences
-BSE=Biological Systems Engineering
-BUS=Business
-C21S=21st Century Studies
-CEE=Civil and Environmental Engineering
-CEM=Construction Engineering and Management
-CHE=Chemical Engineering
-CHEM=Chemistry
-CHN=Chinese
-CINE=Cinema
-CLA=Classics
-CMDA=Computational Modeling and Data Analytics
-COMM=Communication
-CONS=Consumer Studies
-COS=College of Science
-CRIM=Criminology
-CS=Computer Science
-CSES=Crop and Soil Environmental Sciences
-DASC=Dairy Science
-ECE=Electrical and Computer Engineering
-ECON=Economics
-EDCI=Curriculum and Instruction
-EDCT=Career and Technical Education
-EDEP=Educational Psychology
-EDIT=Instructional Design & Tech
-EDTE=Technology Education
-ENGE=Engineering Education
-ENGL=English
-ENGR=Engineering
-ENSC=Environmental Science
-ENT=Entomology
-ESM=Engineering Science and Mechanics
-FA=Fine Arts
-FCS=Family and Consumer Sciences
-FIN=Finance, Insurance, Business Law
-FIW=Fisheries and Wildlife Sciences
-FL=Foreign Language
-FMD=Fashion Merchandising
-FR=French
-FREC=Forest Resources and Environmental Conservation
-FST=Food Science and Technology
-GEOG=Geography
-GEOS=Geosciences
-GER=German
-GR=Greek
-HD=Human Development
-HEB=Hebrew
-HIST=History
-HNFE=Human Nutrition, Foods and Exercise
-HORT=Horticulture
-HTM=Hospitality and Tourism Management
-HUM=Humanities
-IDS=Industrial Design
-IS=International Studies
-ISC=Integrated Science
-ISE=Industrial and Systems Engineering
-ITAL=Italian
-ITDS=Interior Design
-JPN=Japanese
-JUD=Judaic Studies
-LAHS=Liberal Arts and Human Sciences
-LAR=Landscape Architecture
-LAT=Latin
-LDRS=Leadership Studies
-MASC=Mathematical Sciences
-MATH=Mathematics
-ME=Mechanical Engineering
-MGT=Management
-MINE=Mining and Minerals Engineering
-MKTG=Marketing
-MN=Military Navy (NROTC)
-MS=Military Science (AROTC)
-MSE=Materials Science and Engineering
-MTRG=Meteorology
-MUS=Music
-NANO=Nanoscience
-NEUR=Neuroscience
-NR=Natural Resources
-NSEG=Nuclear Science Engineering
-PHIL=Philosophy
-PHS=Population Health Sciences
-PHYS=Physics
-PM=Property Management
-PORT=Portuguese
-PPWS=Plant Pathology, Physiology, and Weed Science
-PSCI=Political Science
-PSVP=Peace Studies
-PSYC=Psychology
-REAL=Real Estate
-RED=Residential Environments and Design
-RLCL=Religion and Culture
-RUS=Russian
-SBIO=Sustainable Biomaterials
-SOC=Sociology
-SPAN=Spanish
-SPIA=School of Public and International Affairs
-STAT=Statistics
-STL=Science, Technology, and Law
-STS=Science Technology Studies
-SYSB=Systems Biology
-TA=Theatre Arts
-TBMH=Translational Biology, Medicine, and Health
-UAP=Urban Affairs and Planning
-UH=University Honors
-UNIV=University Course Series
-VM=Veterinary Medicine
-WGS=Women's and Gender Studies
+AAEC|Agricultural and Applied Economics
+ACIS|Accounting and Information Systems
+AFST|Africana Studies
+AHRM|Apparel, Housing, and Resource Management
+AINS|American Indian Studies
+ALCE|Agricultural, Leadership, and Community Education
+ALS|Agriculture and Life Sciences
+AOE|Aerospace and Ocean Engineering
+APS|Appalachian Studies
+APSC|Animal and Poultry Sciences
+ARBC|Arabic
+ARCH|Architecture
+ART|Art and Art History
+AS|Aerospace Studies (AFROTC)
+AT|Agricultural Technology
+BC|Building Construction
+BCHM|Biochemistry
+BIOL|Biological Sciences
+BIT|Business Information Technology
+BMES|Biomedical Engineering and Sciences
+BMSP|Biomedical Sciences and Pathobiology
+BMVS|Biomedical & Veterinary Sciences
+BSE|Biological Systems Engineering
+BUS|Business
+C21S|21st Century Studies
+CEE|Civil and Environmental Engineering
+CEM|Construction Engineering and Management
+CHE|Chemical Engineering
+CHEM|Chemistry
+CHN|Chinese
+CINE|Cinema
+CLA|Classics
+CMDA|Computational Modeling and Data Analytics
+COMM|Communication
+CONS|Consumer Studies
+COS|College of Science
+CRIM|Criminology
+CS|Computer Science
+CSES|Crop and Soil Environmental Sciences
+DASC|Dairy Science
+ECE|Electrical and Computer Engineering
+ECON|Economics
+EDCI|Curriculum and Instruction
+EDCT|Career and Technical Education
+EDEP|Educational Psychology
+EDIT|Instructional Design & Tech
+EDTE|Technology Education
+ENGE|Engineering Education
+ENGL|English
+ENGR|Engineering
+ENSC|Environmental Science
+ENT|Entomology
+ESM|Engineering Science and Mechanics
+FA|Fine Arts
+FCS|Family and Consumer Sciences
+FIN|Finance, Insurance, Business Law
+FIW|Fisheries and Wildlife Sciences
+FL|Foreign Language
+FMD|Fashion Merchandising
+FR|French
+FREC|Forest Resources and Environmental Conservation
+FST|Food Science and Technology
+GEOG|Geography
+GEOS|Geosciences
+GER|German
+GR|Greek
+HD|Human Development
+HEB|Hebrew
+HIST|History
+HNFE|Human Nutrition, Foods and Exercise
+HORT|Horticulture
+HTM|Hospitality and Tourism Management
+HUM|Humanities
+IDS|Industrial Design
+IS|International Studies
+ISC|Integrated Science
+ISE|Industrial and Systems Engineering
+ITAL|Italian
+ITDS|Interior Design
+JPN|Japanese
+JUD|Judaic Studies
+LAHS|Liberal Arts and Human Sciences
+LAR|Landscape Architecture
+LAT|Latin
+LDRS|Leadership Studies
+MASC|Mathematical Sciences
+MATH|Mathematics
+ME|Mechanical Engineering
+MGT|Management
+MINE|Mining and Minerals Engineering
+MKTG|Marketing
+MN|Military Navy (NROTC)
+MS|Military Science (AROTC)
+MSE|Materials Science and Engineering
+MTRG|Meteorology
+MUS|Music
+NANO|Nanoscience
+NEUR|Neuroscience
+NR|Natural Resources
+NSEG|Nuclear Science Engineering
+PHIL|Philosophy
+PHS|Population Health Sciences
+PHYS|Physics
+PM|Property Management
+PORT|Portuguese
+PPWS|Plant Pathology, Physiology, and Weed Science
+PSCI|Political Science
+PSVP|Peace Studies
+PSYC|Psychology
+REAL|Real Estate
+RED|Residential Environments and Design
+RLCL|Religion and Culture
+RUS|Russian
+SBIO|Sustainable Biomaterials
+SOC|Sociology
+SPAN|Spanish
+SPIA|School of Public and International Affairs
+STAT|Statistics
+STL|Science, Technology, and Law
+STS|Science Technology Studies
+SYSB|Systems Biology
+TA|Theatre Arts
+TBMH|Translational Biology, Medicine, and Health
+UAP|Urban Affairs and Planning
+UH|University Honors
+UNIV|University Course Series
+VM|Veterinary Medicine
+WGS|Women's and Gender Studies
