@@ -1,7 +1,7 @@
 <template>
   <div class='content-container'>
     <div class='header-space'></div>
-    <Group :key='name' v-for='name in groupNames' :name='name'/>
+    <Group :key='info._id' v-for='info in groupNames' :info='info'/>
   </div>
 
 </template>
@@ -16,12 +16,7 @@ export default {
   },
   data () {
     return {
-      groupNames: [
-        'One',
-        'Two',
-        'Three',
-        'Four'
-      ]
+      groupNames: []
     }
   },
   mounted () {
@@ -33,7 +28,7 @@ export default {
         if (result.data.err) {
           window.notify(null, result.data.err)
         } else {
-          _this.groupNames = result.data.result
+          _this.groupNames = result.data.results
         }
       })
   }

@@ -1,19 +1,19 @@
 <template>
-  <router-link :to='"/search/categories/" + name'>
-    <div class='category-button'>
-      {{ name }}
+  <router-link :to='"/search/groups/" + info._id'>
+    <div class='group-button'>
+      {{ info._id + ': ' + info.title }}
     </div>
   </router-link>
 </template>
 
 <script>
 export default {
-  props: ['name']
+  props: ['info']
 }
 </script>
 
 <style>
-.category-button {
+.group-button {
   background-color: #eee;
   width: 100%;
   height: 30px;
@@ -27,7 +27,7 @@ export default {
 
   font-size: 20px;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
   line-height: 30px;
   margin-bottom: 10px;
   text-decoration: none;
@@ -35,11 +35,11 @@ export default {
 
 }
 
-  .category-button:hover {
+  .group-button:hover {
     background-color: #e1e1e1;
   }
 
-  .category-button:active {
+  .group-button:active {
     left: 4px;
     top: 4px;
     box-shadow: none;

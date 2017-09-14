@@ -384,8 +384,8 @@ function setupExpress (db) {
     }
   });
 
-  app.get('searchByCategory', function (req, res) {
-    getSearchResultsByCategory(req.query.category, db, function (error, results) {
+  app.get('searchQuestionsByGroup', function (req, res) {
+    getSearchResultsByGroup(req.query.group, db, function (error, results) {
       results.map(function (result) {
         result.date = formatDate(result.date);
         return result;
@@ -943,6 +943,19 @@ function getGroups (courses, db, callback) {
   var groups = db.collection('groups')
   groups
     .find()
+    .toArray(function (err, results) {
+      if (!err) {
+        callback(results);
+      } else {
+        console.error(err);
+      }
+    });
+}
+
+function getSearchResultsByGroup (group, db, callback) {
+  var questions = db.collection('questions');
+  questions
+    .find({group: group})
     .toArray(function (err, results) {
       if (!err) {
         callback(results);
