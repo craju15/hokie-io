@@ -26,28 +26,28 @@
     data () {
       return {
         results: [
-          {
-            _id: 1,
-            title: '-',
-            name: 'Jacob Merizian',
-            userID: 'jacob.merizian',
-            date: '-',
-            amt: 0
-          },
-          {
-            _id: 1,
-            title: '-',
-            name: 'Jacob Merizian',
-            userID: 'jacob.merizian',
-            date: '-',
-            amt: 0
-          }
+//          {
+//            _id: 1,
+//            title: '-',
+//            name: 'Jacob Merizian',
+//            userID: 'jacob.merizian',
+//            date: '-',
+//            amt: 0
+//          },
+//          {
+//            _id: 1,
+//            title: '-',
+//            name: 'Jacob Merizian',
+//            userID: 'jacob.merizian',
+//            date: '-',
+//            amt: 0
+//          }
         ],
         pageTitle: 'Search Results'
       }
     },
     methods: {
-      getSearchResults () {
+      mounted () {
         let _this = this
         // check what the type is from the url
         if (this.$route.params.type === 'groups') {
@@ -55,10 +55,10 @@
           ax.get(window.backend_url + '/getQuestionsByGroup' +
           '?group=' + this.$route.params.query +
           '&email=' + window.getCookie('email'))
-            .then((response) => {
+            .then(function (response) {
               _this.results = response.data.results
             })
-            .catch((error) => {
+            .catch(function (error) {
               window.notify(null, error)
             })
         } else if (this.$route.params.type === 'query') {
@@ -66,24 +66,23 @@
           ax.get(window.backend_url + '/getSearchResults/' + this.$route.params.query +
             '?userID=' + window.getCookie('userID') +
             '&email=' + window.getCookie('email'))
-            .then((response) => {
+            .then(function (response) {
               _this.results = response.data.results
             })
-            .catch((error) => {
+            .catch(function (error) {
               console.log(error)
               window.notify(_this, error)
             })
         }
       }
-    },
-    beforeMount () {
-      this.getSearchResults()
-    },
-    watch: {
-      '$route': function () {
-        this.getSearchResults()
-      }
     }
   }
 </script>
 
+<style>
+  .no-answers-yet-message {
+    color: #999;
+    text-align: center;
+    font-size: 20px;
+  }
+</style>

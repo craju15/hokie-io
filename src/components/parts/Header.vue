@@ -47,7 +47,7 @@
     data () {
       return {
         linksLeft: [
-          {title: 'recent', target: '/'},
+          {title: 'home', target: '/'},
           {title: 'about', target: '/about'},
           {title: 'courses', target: '/groups'}
         ],

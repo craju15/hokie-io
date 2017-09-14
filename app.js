@@ -480,7 +480,7 @@ function findUserArray (userID, db, callback) {
 function getRecentQuestions (db, callback) {
   var questionCollection = db.collection('questions');
   questionCollection.count(function (error, numberOfQuestions) {
-    questionCollection.find({_id: {$gt: numberOfQuestions - 30}})
+    questionCollection.find({_id: {$gt: numberOfQuestions - 6}})
       .sort({_id: -1}).toArray(function (err, results) {
       if (!err) {
         callback(results);
