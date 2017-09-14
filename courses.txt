@@ -1,0 +1,55 @@
+id,title,motd,course
+CS1014,Introduction to Computational Thinking,,true
+CS1044,Introduction to Programming in C,,true
+CS1054,Introduction to Programming in Java,,true
+CS1064,Introduction to Programming in Python,,true
+CS1114,Introduction to Software Design,,true
+CS1124,Introduction to Media Computation,,true
+CS1604,Introduction to the Internet,,true
+CS1944,Computer Science 1st Year Seminar,,true
+CS2104,Introduction to Problem Solving in Computer Science,,true
+CS2114,Software Design & Data Structures,,true
+CS2304,Self Study in a Programming System,,true
+CS2505,Introduction to Computer Organization I,,true
+CS2506,Introduction to Computer Organization II,,true
+CS2974,Independent Study,,true
+CS3114,Data Structures & Algorithms,,true
+CS3214,Computer Systems,,true
+CS3304,Comparative Languages,,true
+CS3414,Numerical Methods,,true
+CS3604,Professionalism in Computing,,true
+CS3634,Computer Science Foundations for CMDA,,true
+CS3654,Introductory Data Analytics and Visualization,,true
+CS3704,Intermediate Software Design and Engineering,,true
+CS3714,Mobile Software Development,,true
+CS3724,Introduction to Human-Computer Interaction,,true
+CS3744,Introduction to GUI Programming and Graphics,,true
+CS3754,Cloud Software Development,,true
+CS3824,Introduction to Computational Biology and Bioinformatics,,true
+CS4104,Data and Algorithm Analysis,,true
+CS4114,Introduction to Formal Languages and Automata Theory,,true
+CS4124,Theory of Computation,,true
+CS4204,Computer Graphics,,true
+CS4214,Simulation and Modeling,,true
+CS4234,Parallel Computation,,true
+CS4244,Internet Software Development,,true
+CS4254,Computer Network Architecture and Programming,,true
+CS4264,Principles of Computer Security,,true
+CS4284,Systems & Networking Capstone,,true
+CS4304,Compiler Design and Implementation,,true
+CS4414,Issues in Scientific Computing,,true
+CS4504,Computer Organization,,true
+CS4570,Wireless Networks and Mobile Systems,,true
+CS4604,Introduction to Data Base Management Systems,,true
+CS4624,Multimedia Hypertext and Information Access,,true
+CS4634,Design of Information,,true
+CS4644,Creative Computing Studio,,true
+CS4654,Intermediate Data Analytics and Machine Learning,,true
+CS4704,Software Engineering Capstone,,true
+CS4784,Human-Computer Interaction Capstone,,true
+CS4804,Introduction to Artificial Intelligence,,true
+CS4824,Machine Learning,,true
+CS4884,Computational Biology & Bioinformatics Capstone,,true
+CS4944,Senior Seminar,,true
+CS4974,Independent Study,,true
+CS4994,Undergraduate Research,,true

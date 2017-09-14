@@ -1,55 +1,128 @@
-id,title,motd,course
-CS1014,Introduction to Computational Thinking,,true
-CS1044,Introduction to Programming in C,,true
-CS1054,Introduction to Programming in Java,,true
-CS1064,Introduction to Programming in Python,,true
-CS1114,Introduction to Software Design,,true
-CS1124,Introduction to Media Computation,,true
-CS1604,Introduction to the Internet,,true
-CS1944,Computer Science 1st Year Seminar,,true
-CS2104,Introduction to Problem Solving in Computer Science,,true
-CS2114,Software Design & Data Structures,,true
-CS2304,Self Study in a Programming System,,true
-CS2505,Introduction to Computer Organization I,,true
-CS2506,Introduction to Computer Organization II,,true
-CS2974,Independent Study,,true
-CS3114,Data Structures & Algorithms,,true
-CS3214,Computer Systems,,true
-CS3304,Comparative Languages,,true
-CS3414,Numerical Methods,,true
-CS3604,Professionalism in Computing,,true
-CS3634,Computer Science Foundations for CMDA,,true
-CS3654,Introductory Data Analytics and Visualization,,true
-CS3704,Intermediate Software Design and Engineering,,true
-CS3714,Mobile Software Development,,true
-CS3724,Introduction to Human-Computer Interaction,,true
-CS3744,Introduction to GUI Programming and Graphics,,true
-CS3754,Cloud Software Development,,true
-CS3824,Introduction to Computational Biology and Bioinformatics,,true
-CS4104,Data and Algorithm Analysis,,true
-CS4114,Introduction to Formal Languages and Automata Theory,,true
-CS4124,Theory of Computation,,true
-CS4204,Computer Graphics,,true
-CS4214,Simulation and Modeling,,true
-CS4234,Parallel Computation,,true
-CS4244,Internet Software Development,,true
-CS4254,Computer Network Architecture and Programming,,true
-CS4264,Principles of Computer Security,,true
-CS4284,Systems & Networking Capstone,,true
-CS4304,Compiler Design and Implementation,,true
-CS4414,Issues in Scientific Computing,,true
-CS4504,Computer Organization,,true
-CS4570,Wireless Networks and Mobile Systems,,true
-CS4604,Introduction to Data Base Management Systems,,true
-CS4624,Multimedia Hypertext and Information Access,,true
-CS4634,Design of Information,,true
-CS4644,Creative Computing Studio,,true
-CS4654,Intermediate Data Analytics and Machine Learning,,true
-CS4704,Software Engineering Capstone,,true
-CS4784,Human-Computer Interaction Capstone,,true
-CS4804,Introduction to Artificial Intelligence,,true
-CS4824,Machine Learning,,true
-CS4884,Computational Biology & Bioinformatics Capstone,,true
-CS4944,Senior Seminar,,true
-CS4974,Independent Study,,true
-CS4994,Undergraduate Research,,true
+AAEC=Agricultural and Applied Economics
+ACIS=Accounting and Information Systems
+AFST=Africana Studies
+AHRM=Apparel, Housing, and Resource Management
+AINS=American Indian Studies
+ALCE=Agricultural, Leadership, and Community Education
+ALS=Agriculture and Life Sciences
+AOE=Aerospace and Ocean Engineering
+APS=Appalachian Studies
+APSC=Animal and Poultry Sciences
+ARBC=Arabic
+ARCH=Architecture
+ART=Art and Art History
+AS=Aerospace Studies (AFROTC)
+AT=Agricultural Technology
+BC=Building Construction
+BCHM=Biochemistry
+BIOL=Biological Sciences
+BIT=Business Information Technology
+BMES=Biomedical Engineering and Sciences
+BMSP=Biomedical Sciences and Pathobiology
+BMVS=Biomedical & Veterinary Sciences
+BSE=Biological Systems Engineering
+BUS=Business
+C21S=21st Century Studies
+CEE=Civil and Environmental Engineering
+CEM=Construction Engineering and Management
+CHE=Chemical Engineering
+CHEM=Chemistry
+CHN=Chinese
+CINE=Cinema
+CLA=Classics
+CMDA=Computational Modeling and Data Analytics
+COMM=Communication
+CONS=Consumer Studies
+COS=College of Science
+CRIM=Criminology
+CS=Computer Science
+CSES=Crop and Soil Environmental Sciences
+DASC=Dairy Science
+ECE=Electrical and Computer Engineering
+ECON=Economics
+EDCI=Curriculum and Instruction
+EDCT=Career and Technical Education
+EDEP=Educational Psychology
+EDIT=Instructional Design & Tech
+EDTE=Technology Education
+ENGE=Engineering Education
+ENGL=English
+ENGR=Engineering
+ENSC=Environmental Science
+ENT=Entomology
+ESM=Engineering Science and Mechanics
+FA=Fine Arts
+FCS=Family and Consumer Sciences
+FIN=Finance, Insurance, Business Law
+FIW=Fisheries and Wildlife Sciences
+FL=Foreign Language
+FMD=Fashion Merchandising
+FR=French
+FREC=Forest Resources and Environmental Conservation
+FST=Food Science and Technology
+GEOG=Geography
+GEOS=Geosciences
+GER=German
+GR=Greek
+HD=Human Development
+HEB=Hebrew
+HIST=History
+HNFE=Human Nutrition, Foods and Exercise
+HORT=Horticulture
+HTM=Hospitality and Tourism Management
+HUM=Humanities
+IDS=Industrial Design
+IS=International Studies
+ISC=Integrated Science
+ISE=Industrial and Systems Engineering
+ITAL=Italian
+ITDS=Interior Design
+JPN=Japanese
+JUD=Judaic Studies
+LAHS=Liberal Arts and Human Sciences
+LAR=Landscape Architecture
+LAT=Latin
+LDRS=Leadership Studies
+MASC=Mathematical Sciences
+MATH=Mathematics
+ME=Mechanical Engineering
+MGT=Management
+MINE=Mining and Minerals Engineering
+MKTG=Marketing
+MN=Military Navy (NROTC)
+MS=Military Science (AROTC)
+MSE=Materials Science and Engineering
+MTRG=Meteorology
+MUS=Music
+NANO=Nanoscience
+NEUR=Neuroscience
+NR=Natural Resources
+NSEG=Nuclear Science Engineering
+PHIL=Philosophy
+PHS=Population Health Sciences
+PHYS=Physics
+PM=Property Management
+PORT=Portuguese
+PPWS=Plant Pathology, Physiology, and Weed Science
+PSCI=Political Science
+PSVP=Peace Studies
+PSYC=Psychology
+REAL=Real Estate
+RED=Residential Environments and Design
+RLCL=Religion and Culture
+RUS=Russian
+SBIO=Sustainable Biomaterials
+SOC=Sociology
+SPAN=Spanish
+SPIA=School of Public and International Affairs
+STAT=Statistics
+STL=Science, Technology, and Law
+STS=Science Technology Studies
+SYSB=Systems Biology
+TA=Theatre Arts
+TBMH=Translational Biology, Medicine, and Health
+UAP=Urban Affairs and Planning
+UH=University Honors
+UNIV=University Course Series
+VM=Veterinary Medicine
+WGS=Women's and Gender Studies

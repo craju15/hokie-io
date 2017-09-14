@@ -22,7 +22,7 @@ MongoClient.connect(url, function(err, db) {
     var csvData = [];
     var skippedFirst = false;
     fs.createReadStream('groups.txt')
-      .pipe(parse({delimeter: ','}))
+      .pipe(parse({delimeter: '='}))
       .on('data', function (csvrow) {
         if (skippedFirst) {
           var obj = {
