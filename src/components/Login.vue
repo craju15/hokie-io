@@ -55,6 +55,9 @@
               _this.updateUserID()
               _this.$router.push({path: '/'})
             } else {
+              if (response.data.error === 'verify email') {
+                _this.$router.push({path: '/verify'})
+              }
               window.notify(_this, response.data.error)
             }
           })

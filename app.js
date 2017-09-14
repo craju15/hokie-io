@@ -203,6 +203,7 @@ function setupExpress (db) {
     userInfo.firstName = req.query.firstName;
     userInfo.lastName = req.query.lastName;
     userInfo.email = req.query.email;
+    userInfo.major = req.query.major;
     // sanitize inputs:
     if (!userInfo.firstName || userInfo.firstName == '') {
       res.send({err: 'Please enter your first name!'});
@@ -216,6 +217,8 @@ function setupExpress (db) {
       res.send({err: 'Password is too short!'});
     } else if (!/@vt\.edu$/.test(userInfo.email)) {
       res.send({err: 'Must use a "@vt.edu" email!'});
+    } else if (req.query.major === 'default') {
+      res.send({err: 'Please select a major!'});
     } else {
       // userID still must be checked in case it matches another person
       userInfo.userID = (userInfo.firstName + '.' + userInfo.lastName).replace(/\s/g, '').toLowerCase();
@@ -302,20 +305,26 @@ function setupExpress (db) {
     var email = req.query.email;
     var password = req.query.password
     if (email && password) {
-      verifyPassword(email, password, db, function (verified, userID) {
-        if (verified) {
-          createSession(email, db, function (sessionToken) {
-            var censoredUrl = req.originalUrl.substring(0, req.originalUrl.indexOf('&password=') + 10) + '***';
-            addToLog('getSession', req.get('host') + censoredUrl, req.query.email, req.query.userID, db, function (err) {
-              res.send({
-                sessionToken: sessionToken,
-                verified: verified,
-                userID: userID
+      verifyEmail(email, db, function (emailVerified) {
+        if (emailVerified) {
+          verifyPassword(email, password, db, function (verified, userID) {
+            if (verified) {
+              createSession(email, db, function (sessionToken) {
+                var censoredUrl = req.originalUrl.substring(0, req.originalUrl.indexOf('&password=') + 10) + '***';
+                addToLog('getSession', req.get('host') + censoredUrl, req.query.email, req.query.userID, db, function (err) {
+                  res.send({
+                    sessionToken: sessionToken,
+                    verified: verified,
+                    userID: userID
+                  });
+                });
               });
-            });
+            } else {
+              res.send({error: "Wrong password or username!"});
+            }
           });
         } else {
-          res.send({error: "Wrong password or username!"});
+          res.send({error: "verify email"});
         }
       });
     } else {
@@ -655,6 +664,18 @@ function verifyPassword(email, password, db, callback) {
       console.error(err);
     }
   })
+}
+
+function verifyEmail(email, db, callback) {
+  db.collection('users').findOne({'email': email}, function (err, result) {
+    if (!err) {
+      if (result) {
+        callback(result.emailVerified);
+      } else {
+        callback(false);
+      }
+    }
+  });
 }
 
 function createSession(email, db, callback) {
