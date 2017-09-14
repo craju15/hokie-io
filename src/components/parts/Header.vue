@@ -49,7 +49,7 @@
         linksLeft: [
           {title: 'home', target: '/'},
           {title: 'about', target: '/about'},
-          {title: 'courses', target: '/groups'}
+          {title: 'majors', target: '/groups'}
         ],
         searchBarStyles: {},
         linksStyles: {},

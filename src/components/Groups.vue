@@ -1,6 +1,7 @@
 <template>
   <div class='content-container'>
     <div class='header-space'></div>
+    <div class='big-title'>Find your major:</div>
     <Group :key='info._id' v-for='info in groupNames' :info='info'/>
   </div>
 

@@ -346,6 +346,16 @@ function setupExpress (db) {
     });
   });
 
+  app.get('/searchQuestionsByGroup/', function (req, res) {
+    getSearchResultsByGroup(req.query.group, db, function (error, results) {
+      results.map(function (result) {
+        result.date = formatDate(result.date);
+        return result;
+      });
+      res.send({results: results});
+    });
+  });
+
   app.get('/updateQuestionAmt/', function (req, res) {
     var change = parseInt(req.query.change);
     if (change == -1 || change == 1) {
@@ -384,16 +394,6 @@ function setupExpress (db) {
     } else {
       res.send({err: "Invalid change amount!"});
     }
-  });
-
-  app.get('/searchQuestionsByGroup', function (req, res) {
-    getSearchResultsByGroup(req.query.group, db, function (error, results) {
-      results.map(function (result) {
-        result.date = formatDate(result.date);
-        return result;
-      });
-      res.send({results: results});
-    });
   });
 
   app.get('/changeProfilePic', function (req, res) {
