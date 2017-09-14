@@ -46,7 +46,8 @@
     },
     mounted () {
       let _this = this
-      ax.get(window.backend_url + '/getRecentQuestions/')
+      ax.get(window.backend_url + '/getRecentQuestions/' +
+      '?email=' + window.getCookie('email'))
         .then((response) => {
           _this.results = response.data.results
         })

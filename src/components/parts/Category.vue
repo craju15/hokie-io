@@ -27,10 +27,8 @@ export default {
 
   font-size: 20px;
   font-weight: bold;
-  width: 90%;
   text-align: center;
   line-height: 30px;
-  margin: 0px;
   margin-bottom: 10px;
   text-decoration: none;
   color: black;

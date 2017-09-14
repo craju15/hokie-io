@@ -93,6 +93,18 @@ function setupExpress (db) {
     });
   });
 
+  app.get('/getPopularQuestions', function (req, res) {
+    getPopularQuestions(db, function (results) {
+      results.map(function (result) {
+        result.date = formatDate(result.date);
+        return result;
+      });
+      addToLog('getPopularQuestions', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
+        res.send({results: results});
+      });
+    });
+  });
+
   app.get('/addNewAnswer', function (req, res) {
     // requires sessionToken, body, name, userID,
     // email, and questionID
@@ -409,6 +421,7 @@ function setupExpress (db) {
       res.send({err: "You don't have access to this page!"});
     }
   });
+
 
   // This is a catch all which serves the index.html
   // file to all other routes. That way, route handling
@@ -889,7 +902,6 @@ function addToLog (logName, logInfo, email, userID, db, callback) {
   });
 }
 
-
 function getLast100Logs (db, callback) {
   var logs = db.collection('logs');
   logs.count(function (error, amt) {
@@ -902,6 +914,21 @@ function getLast100Logs (db, callback) {
           return log;
         });
       callback(err, logs);
+    });
+  });
+}
+
+function getPopularQuestions (db, callback) {
+  var questionCollection = db.collection('questions');
+  questionCollection.count(function (error, numberOfQuestions) {
+    questionCollection
+      .find({_id: {$gt: numberOfQuestions - 30}})
+      .sort({amt: 1}).toArray(function (err, results) {
+        if (!err) {
+          callback(results);
+        } else {
+          console.error(err);
+        }
     });
   });
 }

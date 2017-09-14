@@ -1,7 +1,8 @@
 <template>
   <div class='content-container'>
     <div class='header-space'></div>
-    <Category :key='name' v-for='name in categoryNames' :name='name'/>
+    <p style='width: 100%; text-align: center; background-color: yellow; opacity: 0.3'>this section is under construction:</p>
+    <Category style='opacity: 0.3' :key='name' v-for='name in categoryNames' :name='name'/>
   </div>
 
 </template>
