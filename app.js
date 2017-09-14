@@ -407,8 +407,8 @@ function setupExpress (db) {
   });
 
   app.get('/getGroups', function (req, res) {
-    getGroups(req.query.courses, db, function (err) {
-      res.send({err: err});
+    getGroups(req.query.courses, db, function (results) {
+      res.send({results: results});
     });
   });
 
