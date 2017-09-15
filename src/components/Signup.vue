@@ -83,6 +83,7 @@
             '&recaptcha=' + e.target.elements['g-recaptcha-response'].value
           ).then((response) => {
             if (response.data.err) {
+              console.log('hi')
               window.notify(_this, response.data.err)
             } else {
               // console.log(response.data.userInfo)
