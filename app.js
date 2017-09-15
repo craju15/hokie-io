@@ -206,7 +206,7 @@ function setupExpress (db) {
     userInfo.lastName = req.query.lastName;
     userInfo.email = req.query.email;
     userInfo.major = req.query.major;
-    userInfo.verificationCode = Math.floor(Math.random() * 5) + 10000;
+    userInfo.verificationCode = Math.floor(Math.random() * 10000);
     // sanitize inputs:
     if (!userInfo.firstName || userInfo.firstName == '') {
       res.send({err: 'Please enter your first name!'});
@@ -448,7 +448,7 @@ function setupExpress (db) {
     });
   });
 
-  app.get('/emailUserWithVerificationCode', function (req, res) {
+  app.get('/emailVerificationCode', function (req, res) {
     fs.readFile('pass.txt', 'utf8', function (err, data) {
       console.log(data.slice(0, data.length - 1));
       var transport = nodemailer.createTransport({

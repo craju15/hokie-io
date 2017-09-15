@@ -21,6 +21,7 @@ import Notification from '@/components/parts/Notification'
 import ax from 'axios'
 
 export default {
+  props: ['updateLoginStatus', 'updateUserID'],
   components: {
     Notification
   },
@@ -37,7 +38,7 @@ export default {
     resendVerificationCode () {
       let _this = this
       _this.emailSentStyles.display = 'none'
-      ax.get(window.backend_url + '/emailUserWithVerificationCode' +
+      ax.get(window.backend_url + '/emailVerificationCode' +
       '?email=' + window.getCookie('email'))
         .then(function (response) {
           _this.emailSentStyles.display = 'block'
@@ -72,7 +73,7 @@ export default {
                   window.password_temp = null
                   _this.updateLoginStatus()
                   _this.updateUserID()
-                  _this.$router.push({path: '/profile/' + response.data.userInfo.userID})
+                  _this.$router.push({path: '/profile/' + response2.data.userID})
                 } else {
                   window.notify(_this, response2.data.error)
                 }

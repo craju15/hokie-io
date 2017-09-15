@@ -87,8 +87,20 @@
             } else {
               // console.log(response.data.userInfo)
               // console.log(e.target.elements.password.value)
-              window.password_temp = e.target.elements.password.value
-              _this.$router.push({path: '/'})
+              // send verifiction email:
+              ax.get(window.backend_url + '/emailVerificationCode' +
+              '?email=' + window.getCookie('email'))
+                .then(function (response) {
+                  if (!response.data.err) {
+                    window.password_temp = e.target.elements.password.value
+                    _this.$router.push({path: '/verify'})
+                  } else {
+                    window.notify(null, response.data.err)
+                  }
+                })
+                .catch(function (err) {
+                  window.notify(null, err)
+                })
             }
           })
 
