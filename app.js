@@ -308,10 +308,10 @@ function setupExpress (db) {
     var email = req.query.email;
     var password = req.query.password
     if (email && password) {
-      checkEmailVerified(email, db, function (emailVerified) {
-        if (emailVerified) {
-          verifyPassword(email, password, db, function (verified, userID) {
-            if (verified) {
+      verifyPassword(email, password, db, function (verified, userID) {
+        if (verified) {
+          checkEmailVerified(email, db, function (emailVerified) {
+            if (emailVerified) {
               createSession(email, db, function (sessionToken) {
                 var censoredUrl = req.originalUrl.substring(0, req.originalUrl.indexOf('&password=') + 10) + '***';
                 addToLog('getSession', req.get('host') + censoredUrl, req.query.email, req.query.userID, db, function (err) {
@@ -323,11 +323,11 @@ function setupExpress (db) {
                 });
               });
             } else {
-              res.send({error: "Wrong password or username!"});
+              res.send({error: "verify email"});
             }
           });
         } else {
-          res.send({error: "verify email"});
+          res.send({error: "Wrong password or username!"});
         }
       });
     } else {
