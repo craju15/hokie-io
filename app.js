@@ -460,7 +460,7 @@ function setupExpress (db) {
         }
       });
       transport.sendMail({
-        from: 'Jacob Merizian <jake@hokie.io>',
+        from: 'Jake <jake@hokie.io>',
         to: 'jmerizia@vt.edu',
         subject: 'Hello world!',
         text: 'World, hello!'
