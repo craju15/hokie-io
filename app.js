@@ -1037,6 +1037,7 @@ function verifyEmail (code, email, db, callback) {
        if (result.verificationCode === code) {
         users
          .update({email: email}, {$set: {emailVerified: true}}, function (err, result) {
+           console.log(result);
            callback(err, result);
          })
        } else {
