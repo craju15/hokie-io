@@ -459,16 +459,21 @@ function setupExpress (db) {
           pass: data
         }
       });
-      transport.sendMail({
-        from: 'Jake <jake@hokie.io>',
-        to: 'jmerizia@vt.edu',
-        subject: 'Hello world!',
-        text: 'World, hello!'
-      }, function (err, responseStatus) {
-        if (err) {
-          res.send({err: err});
-        } else {
-          res.send({responseStatus, responseStatus});
+      findUserByEmail(req.query.email, db, function (err, userInfo) {
+        if (!err) {
+          transport.sendMail({
+            from: 'Jake <jake@hokie.io>',
+            to: 'jmerizia@vt.edu',
+            subject: 'Hello world!',
+            text: userInfo.firstName, '\n\nThanks for signing up for Hokie.IO!\n\n' +
+              'Your verification code is ' + userInfo.verificationCode
+          }, function (err, responseStatus) {
+            if (err) {
+              res.send({err: err});
+            } else {
+              res.send({responseStatus, responseStatus});
+            }
+          });
         }
       });
     });
