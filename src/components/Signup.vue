@@ -89,7 +89,7 @@
               // console.log(e.target.elements.password.value)
               // send verifiction email:
               ax.get(window.backend_url + '/emailVerificationCode' +
-              '?email=' + window.getCookie('email'))
+              '?email=' + e.target.elements.email.value)
                 .then(function (response) {
                   if (!response.data.err) {
                     window.password_temp = e.target.elements.password.value
