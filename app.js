@@ -3,6 +3,8 @@ var sha256 = require('sha256');
 var express = require('express');
 var app = express();
 var ax = require('axios');
+var nodemailer = require('nodemailer');
+var fs = require('fs');
 
 var cors = require('cors');
 app.use(cors());
@@ -204,6 +206,7 @@ function setupExpress (db) {
     userInfo.lastName = req.query.lastName;
     userInfo.email = req.query.email;
     userInfo.major = req.query.major;
+    userInfo.verificationCode = Math.floor(Math.random() * 5) + 10000;
     // sanitize inputs:
     if (!userInfo.firstName || userInfo.firstName == '') {
       res.send({err: 'Please enter your first name!'});
@@ -440,13 +443,34 @@ function setupExpress (db) {
   });
 
   app.get('/verifyEmail', function (req, res) {
-    verifyEmail(req.query.email, db, function (err, result) {
+    verifyEmail(req.query.code, req.query.email, db, function (err, result) {
       res.send({err: err});
     });
   });
 
   app.get('/emailUserWithVerificationCode', function (req, res) {
     // TODO: send an email ???
+    fs.readFile(filename, 'utf8', function (err, data) {
+      var transport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'jake@hokie.io',
+          pass: data
+        }
+      });
+      transport.sendMail({
+        from: 'Jake <jake@hokie.io>',
+        to: '321@vt.edu',
+        subject: 'Hello world!',
+        text: 'World, hello!'
+      }, function (err, responseStatus) {
+        if (err) {
+          res.send({err: err});
+        } else {
+          res.send({});
+        }
+      });
+    });
   });
 
   // This is a catch all which serves the index.html
@@ -999,9 +1023,17 @@ function getSearchResultsByGroup (group, db, callback) {
     });
 }
 
-function verifyEmail (email, db, callback) {
-  db.collection('users')
-    .update({email: email}, {$set: {emailVerified: true}}, function (err, result) {
-      callback(err, result);
-    })
+function verifyEmail (code, email, db, callback) {
+  var users = db.collection('users');
+  users
+    .findOne({email: email}, function (err, result) {
+       if (result.verificationCode === code) {
+        users
+         .update({email: email}, {$set: {emailVerified: true}}, function (err, result) {
+           callback(err, result);
+         })
+       } else {
+         callback('Incorrect verification code!', null);
+       }
+    });
 }

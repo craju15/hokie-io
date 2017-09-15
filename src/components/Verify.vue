@@ -34,13 +34,45 @@ export default {
           window.notify(null, err)
         })
     },
-    handleVerify () {
+    handleVerify (e) {
       let _this = this
+
       ax.get('/verifyEmail' +
-      '?email=' + window.getCookie('email'))
+      '?email=' + window.getCookie('email') +
+      '&code=' + e.target.elements.code.value)
         .then(function (response) {
           if (!response.err) {
-            _this.$router.push({path: '/'})
+            ax.get(window.backend_url + '/getSession?' +
+              'email=' + response.data.userInfo.email +
+              '&password=' + window.password_temp)
+              .then((response2) => {
+                if (!response2.data.error && response2.data.verified) {
+                  window.setCookie(
+                    'sessionToken',
+                    response2.data.sessionToken,
+                    window.cookie_expire_time
+                  )
+                  window.setCookie(
+                    'email',
+                    response.data.userInfo.email,
+                    window.cookie_expire_time
+                  )
+                  window.setCookie(
+                    'userID',
+                    response2.data.userID,
+                    window.cookie_expire_time
+                  )
+                  _this.updateLoginStatus()
+                  _this.updateUserID()
+                  _this.$router.push({path: '/profile/' + response.data.userInfo.userID})
+                } else {
+                  window.notify(_this, response2.data.error)
+                }
+              })
+              .catch((error) => {
+                console.log('promise error:')
+                window.notify(_this, error)
+              })
           } else {
             window.notify(null, response.err)
           }

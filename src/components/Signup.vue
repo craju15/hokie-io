@@ -85,39 +85,10 @@
             if (response.data.err) {
               window.notify(_this, response.data.err)
             } else {
-              console.log(response.data.userInfo)
-              console.log(e.target.elements.password.value)
-              ax.get(window.backend_url + '/getSession?' +
-                'email=' + response.data.userInfo.email +
-                '&password=' + e.target.elements.password.value)
-                .then((response2) => {
-                  if (!response2.data.error && response2.data.verified) {
-                    window.setCookie(
-                      'sessionToken',
-                      response2.data.sessionToken,
-                      window.cookie_expire_time
-                    )
-                    window.setCookie(
-                      'email',
-                      response.data.userInfo.email,
-                      window.cookie_expire_time
-                    )
-                    window.setCookie(
-                      'userID',
-                      response2.data.userID,
-                      window.cookie_expire_time
-                    )
-                    _this.updateLoginStatus()
-                    _this.updateUserID()
-                    _this.$router.push({path: '/profile/' + response.data.userInfo.userID})
-                  } else {
-                    window.notify(_this, response2.data.error)
-                  }
-                })
-                .catch((error) => {
-                  console.log('promise error:')
-                  window.notify(_this, error)
-                })
+              // console.log(response.data.userInfo)
+              // console.log(e.target.elements.password.value)
+              window.password_temp = e.target.elements.password.value
+              _this.$router.push({path: '/'})
             }
           })
 
