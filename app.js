@@ -451,25 +451,26 @@ function setupExpress (db) {
   app.get('/emailUserWithVerificationCode', function (req, res) {
     // TODO: send an email ???
     fs.readFile('pass.txt', 'utf8', function (err, data) {
-      var transport = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'jake@hokie.io',
-          pass: data
-        }
-      });
-      transport.sendMail({
-        from: 'Jake <jake@hokie.io>',
-        to: '321@vt.edu',
-        subject: 'Hello world!',
-        text: 'World, hello!'
-      }, function (err, responseStatus) {
-        if (err) {
-          res.send({err: err});
-        } else {
-          res.send({});
-        }
-      });
+      console.log(data);
+//      var transport = nodemailer.createTransport({
+//        service: 'gmail',
+//        auth: {
+//          user: 'jake@hokie.io',
+//          pass: data
+//        }
+//      });
+//      transport.sendMail({
+//        from: 'Jake <jake@hokie.io>',
+//        to: '321@vt.edu',
+//        subject: 'Hello world!',
+//        text: 'World, hello!'
+//      }, function (err, responseStatus) {
+//        if (err) {
+//          res.send({err: err});
+//        } else {
+//          res.send({});
+//        }
+//      });
     });
   });
 
