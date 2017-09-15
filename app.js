@@ -449,7 +449,6 @@ function setupExpress (db) {
   });
 
   app.get('/emailUserWithVerificationCode', function (req, res) {
-    // TODO: send an email ???
     fs.readFile('pass.txt', 'utf8', function (err, data) {
       console.log(data.slice(0, data.length - 1));
       var transport = nodemailer.createTransport({
@@ -464,9 +463,9 @@ function setupExpress (db) {
           transport.sendMail({
             from: 'Jake <jake@hokie.io>',
             to: 'jmerizia@vt.edu',
-            subject: 'Hello world!',
+            subject: 'Hokie.IO - Verification Code',
             text: userInfo.firstName + ',\n\nThanks for signing up for Hokie.IO!\n\n' +
-              'Your verification code is <b>' + userInfo.verificationCode + '</b>\n\nSincerely,\n\n' +
+              'Your verification code is ' + userInfo.verificationCode + '\n\nSincerely,\n\n' +
               'Jake@Hokie.IO'
           }, function (err, responseStatus) {
             if (err) {

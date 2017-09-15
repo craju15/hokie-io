@@ -9,6 +9,7 @@
         <input name='verificationCode' type='text' class='form-input'/>
         <button type='submit' style='margin-bottom: 15px;'>verify email</button>
         Didn't receive an email? <a href='#' @click='resendVerificationCode'> Resend your verification code.</a>
+        <p :style='emailSentStyles'>Email sent!</p>
       </form>
 
     </div>
@@ -23,12 +24,23 @@ export default {
   components: {
     Notification
   },
+  data () {
+    return {
+      emailSentStyles: {
+        color: 'green',
+        margin: 0,
+        display: 'none'
+      }
+    }
+  },
   methods: {
     resendVerificationCode () {
-      ax.get('/emailUserWithVerificationCode' +
+      let _this = this
+      _this.emailSentStyles.display = 'none'
+      ax.get(window.backend_url + '/emailUserWithVerificationCode' +
       '?email=' + window.getCookie('email'))
         .then(function (response) {
-          window.notify(null, 'Email sent!')
+          _this.emailSentStyles.display = 'block'
         })
         .catch(function (err) {
           window.notify(null, err)
@@ -36,8 +48,7 @@ export default {
     },
     handleVerify (e) {
       let _this = this
-
-      ax.get('/verifyEmail' +
+      ax.get(window.backend_url + '/verifyEmail' +
       '?email=' + window.getCookie('email') +
       '&code=' + e.target.elements.code.value)
         .then(function (response) {
