@@ -450,7 +450,7 @@ function setupExpress (db) {
 
   app.get('/emailUserWithVerificationCode', function (req, res) {
     // TODO: send an email ???
-    fs.readFile(filename, 'utf8', function (err, data) {
+    fs.readFile('pass.txt', 'utf8', function (err, data) {
       var transport = nodemailer.createTransport({
         service: 'gmail',
         auth: {
