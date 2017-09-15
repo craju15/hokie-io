@@ -53,7 +53,7 @@ export default {
       '?email=' + window.getCookie('email') +
       '&code=' + e.target.elements.verificationCode.value)
         .then(function (response) {
-          if (!response.err) {
+          if (!response.data.err) {
             ax.get(window.backend_url + '/getSession?' +
               'email=' + window.getCookie('email') +
               '&password=' + window.password_temp)
@@ -62,11 +62,6 @@ export default {
                   window.setCookie(
                     'sessionToken',
                     response2.data.sessionToken,
-                    window.cookie_expire_time
-                  )
-                  window.setCookie(
-                    'email',
-                    response.data.userInfo.email,
                     window.cookie_expire_time
                   )
                   window.setCookie(

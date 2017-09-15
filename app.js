@@ -1034,14 +1034,18 @@ function verifyEmail (code, email, db, callback) {
   var users = db.collection('users');
   users
     .findOne({email: email}, function (err, result) {
-       if (result.verificationCode === code) {
-        users
-         .update({email: email}, {$set: {emailVerified: true}}, function (err, result) {
-           console.log(result);
-           callback(err, result);
-         })
-       } else {
-         callback('Incorrect verification code!', null);
-       }
+      if (result.verificationCode === code) {
+        if (result) {
+          users
+            .update({email: email}, {$set: {emailVerified: true}}, function (err, result) {
+              console.log(result);
+              callback(err, result);
+            })
+        } else {
+          callback('Invalid email!', null);
+        }
+      } else {
+        callback('Incorrect verification code!', null);
+      }
     });
 }
