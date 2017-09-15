@@ -93,6 +93,11 @@
               '?email=' + e.target.elements.email.value)
                 .then(function (response) {
                   if (!response.data.err) {
+                    window.setCookie(
+                      'email',
+                      e.target.elements.email.value,
+                      window.cookie_expire_time
+                    )
                     window.password_temp = e.target.elements.password.value
                     _this.$router.push({path: '/verify'})
                   } else {
