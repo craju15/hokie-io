@@ -466,7 +466,9 @@ function setupExpress (db) {
             subject: 'Hokie.IO - Verification Code',
             text: userInfo.firstName + ',\n\nThanks for signing up for Hokie.IO!\n\n' +
               'Your verification code is ' + userInfo.verificationCode + '\n\nSincerely,\n\n' +
-              'Jake@Hokie.IO'
+              'If this is not you, please respond to this email indicating that this was sent' + 
+              'incorrectly to your email.\n\n' +
+              'Sincerely,\n\nJake, the creator of Hokie.IO'
           }, function (err, responseStatus) {
             if (err) {
               res.send({err: err});
