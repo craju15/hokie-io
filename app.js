@@ -455,7 +455,7 @@ function setupExpress (db) {
       var transport = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'jake@hokie.io',
+          user: 'jmerizia@vt.edu',
           pass: data
         }
       });
