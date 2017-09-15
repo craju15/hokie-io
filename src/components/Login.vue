@@ -57,8 +57,15 @@
             } else {
               if (response.data.error === 'verify email') {
                 _this.$router.push({path: '/verify'})
+                // add the email to the cookies, for verification process
+                window.setCookie(
+                  'email',
+                  e.target.elements.email.value,
+                  window.cookie_expire_time
+                )
+              } else {
+                window.notify(_this, response.data.error)
               }
-              window.notify(_this, response.data.error)
             }
           })
           .catch((error) => {

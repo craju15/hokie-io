@@ -11,6 +11,7 @@ import Signup from '@/components/Signup'
 import Search from '@/components/Search'
 import Groups from '@/components/Groups'
 import Logs from '@/components/Logs'
+import Verify from '@/components/Verify'
 
 Vue.use(Router)
 
@@ -62,6 +63,11 @@ export default new Router({
       path: '/logs',
       name: 'Logs',
       component: Logs
+    },
+    {
+      path: '/verify',
+      name: 'Verify',
+      component: Verify
     },
     {
       path: '/',

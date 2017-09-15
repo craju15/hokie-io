@@ -182,6 +182,15 @@
     margin-right: 10px;
   }
 
+  .simple-box {
+    width: 100%;
+    background-color: #eee;
+    padding: 15px;
+    font-size: 20px;
+    animation: 0.3s ease-out 1 slideIn forwards;
+    margin-bottom: 15px;
+  }
+
   @keyframes rainbow {
     0% {background-position: 0% 82%}
     50% {background-position: 100% 19%}

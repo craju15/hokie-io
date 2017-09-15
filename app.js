@@ -305,7 +305,7 @@ function setupExpress (db) {
     var email = req.query.email;
     var password = req.query.password
     if (email && password) {
-      verifyEmail(email, db, function (emailVerified) {
+      checkEmailVerified(email, db, function (emailVerified) {
         if (emailVerified) {
           verifyPassword(email, password, db, function (verified, userID) {
             if (verified) {
@@ -439,6 +439,15 @@ function setupExpress (db) {
     }
   });
 
+  app.get('/verifyEmail', function (req, res) {
+    verifyEmail(req.query.email, db, function (err, result) {
+      res.send({err: err});
+    });
+  });
+
+  app.get('/emailUserWithVerificationCode', function (req, res) {
+    // TODO: send an email ???
+  });
 
   // This is a catch all which serves the index.html
   // file to all other routes. That way, route handling
@@ -666,7 +675,7 @@ function verifyPassword(email, password, db, callback) {
   })
 }
 
-function verifyEmail(email, db, callback) {
+function checkEmailVerified(email, db, callback) {
   db.collection('users').findOne({'email': email}, function (err, result) {
     if (!err) {
       if (result) {
@@ -988,4 +997,11 @@ function getSearchResultsByGroup (group, db, callback) {
         console.error(err);
       }
     });
+}
+
+function verifyEmail (email, db, callback) {
+  db.collection('users')
+    .update({email: email}, {$set: {emailVerified: true}}, function (err, result) {
+      callback(err, result);
+    })
 }
