@@ -69,6 +69,7 @@ export default {
                     response2.data.userID,
                     window.cookie_expire_time
                   )
+                  window.password_temp = null
                   _this.updateLoginStatus()
                   _this.updateUserID()
                   _this.$router.push({path: '/profile/' + response.data.userInfo.userID})
@@ -80,7 +81,7 @@ export default {
                 window.notify(_this, error)
               })
           } else {
-            window.notify(null, response.err)
+            window.notify(null, response.data.err)
           }
         })
         .catch(function (error) {

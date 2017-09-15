@@ -63,6 +63,7 @@
                   e.target.elements.email.value,
                   window.cookie_expire_time
                 )
+                window.password_temp = e.target.elements.password.value
               } else {
                 window.notify(_this, response.data.error)
               }
