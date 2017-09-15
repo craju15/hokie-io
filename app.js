@@ -709,6 +709,7 @@ function checkEmailVerified(email, db, callback) {
   db.collection('users').findOne({'email': email}, function (err, result) {
     if (!err) {
       if (result) {
+        console.log(result.emailVerified);
         callback(result.emailVerified);
       } else {
         callback(false);

@@ -47,14 +47,15 @@ export default {
         })
     },
     handleVerify (e) {
+      e.preventDefault()
       let _this = this
       ax.get(window.backend_url + '/verifyEmail' +
       '?email=' + window.getCookie('email') +
-      '&code=' + e.target.elements.code.value)
+      '&code=' + e.target.elements.verificationCode.value)
         .then(function (response) {
           if (!response.err) {
             ax.get(window.backend_url + '/getSession?' +
-              'email=' + response.data.userInfo.email +
+              'email=' + window.getCookie('email') +
               '&password=' + window.password_temp)
               .then((response2) => {
                 if (!response2.data.error && response2.data.verified) {
@@ -81,7 +82,6 @@ export default {
                 }
               })
               .catch((error) => {
-                console.log('promise error:')
                 window.notify(_this, error)
               })
           } else {
