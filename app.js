@@ -468,7 +468,7 @@ function setupExpress (db) {
         if (err) {
           res.send({err: err});
         } else {
-          res.send({});
+          res.send({responseStatus, responseStatus});
         }
       });
     });
