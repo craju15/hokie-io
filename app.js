@@ -173,6 +173,8 @@ function setupExpress (db) {
       res.send({err: 'The body is too long!'});
     } else if (req.query.body < 10) {
       res.send({err: 'The body is too short!'});
+    } else if (req.query.group === 'default') {
+      res.send({err: 'Please select a group!'});
     } else {
       var questionInfo = {
         title: req.query.title,
@@ -181,7 +183,8 @@ function setupExpress (db) {
         date: new Date(),
         amt: 0,
         upVoters: [],
-        downVoters: []
+        downVoters: [],
+        groupID: req.query.groupID
       };
       verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
         if (verified) {
@@ -358,15 +361,15 @@ function setupExpress (db) {
     });
   });
 
-  app.get('/getSearchResultsByGroup/', function (req, res) {
-    getSearchResultsByGroup(req.query.group, db, function (error, results) {
-      results.map(function (result) {
-        result.date = formatDate(result.date);
-        return result;
-      });
-      res.send({results: results});
-    });
-  });
+//  app.get('/getSearchResultsByGroup/', function (req, res) {
+//    getSearchResultsByGroup(req.query.group, db, function (error, results) {
+//      results.map(function (result) {
+//        result.date = formatDate(result.date);
+//        return result;
+//      });
+//      res.send({results: results});
+//    });
+//  });
 
   app.get('/updateQuestionAmt/', function (req, res) {
     var change = parseInt(req.query.change);
@@ -426,6 +429,7 @@ function setupExpress (db) {
     });
   });
 
+
   app.get('/visitedNewQuestionPage', function (req, res) {
     addToLog('visitedNewQuestionPage', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
       res.send({err: err});
@@ -462,7 +466,7 @@ function setupExpress (db) {
         if (!err) {
           transport.sendMail({
             from: 'Jake <jake@hokie.io>',
-            to: 'jmerizia@vt.edu',
+            to: req.query.email,
             subject: 'Hokie.IO - Verification Code',
             text: userInfo.firstName + ',\n\nThanks for signing up for Hokie.IO!\n\n' +
               'Your verification code is ' + userInfo.verificationCode +
@@ -476,6 +480,82 @@ function setupExpress (db) {
           });
         }
       });
+    });
+  });
+
+  // GROUP OPERATIONS:
+
+  app.get('/getGroups', function (req, res) {
+    getGroups(db, function (results) {
+      res.send({results: results});
+    });
+  });
+
+  app.get('/addNewGroup', function (req, res) {
+    var groupInfo = {};
+    groupInfo.title = req.query.title;
+    groupInfo.creator = req.query.userID;
+    groupInfo.date = new Date();
+    verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
+      if (verified) {
+        getNextSequence('groupID', db, function (nextGroupID) {
+          groupInfo._id = nextGroupID;
+          db.collection('groups')
+            .insert(groupInfo, function (err, result) {
+              if (!err) {
+                addUserToGroup(req.query.userID, nextGroupID, db, function (err, result) {
+                  res.send({err: err, result: result, groupID: nextGroupID});
+                });
+              } else {
+                console.error(err);
+              }
+            });
+        });
+      } else {
+        res.send({err: "Invalid Session!"});
+      }
+    });
+  });
+
+  app.get('/getGroupsForUser', function (req, res) {
+    db.collection('userGroups')
+      .find({userID: req.query.userID})
+      .toArray(function (err, userGroupDocs) {
+        var groupIDs = userGroupDocs.map(function (userGroupDoc) {
+          return userGroupDoc.groupID;
+        });
+        db.collection('groups')
+          .find({_id: {$in: groupIDs}})
+          .toArray(function (err, groupDocs) {
+            res.send({err: err, results: groupDocs});
+          });
+      });
+  });
+
+  app.get('/getUsersInGroup', function (req, res) {
+    db.collection('userGroups')
+      .find({groupID: req.query.groupID})
+      .toArray(function (err, userGroupDocs) {
+        var userIDs = userGroupDocs.map(function (userGroupDoc) {
+          return userGroupDoc.userID;
+        });
+        db.collection('users')
+          .find({userID: {$in: userIDs}})
+          .toArray(function (err, userDocs) {
+            res.send({err: err, results: userDocs});
+          });
+      });
+  });
+
+  app.get('/joinGroup', function (req, res) {
+    verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
+      if (verified) {
+        addUserToGroup(req.query.userID, req.query.groupID, db, function (err, result) {
+          res.send({err: err, result: result});
+        });
+      } else {
+        res.send({err: 'Invalid Session!'});
+      }
     });
   });
 
@@ -1017,6 +1097,19 @@ function getMajors (db, callback) {
     });
 }
 
+function getGroups (db, callback) {
+  var groups = db.collection('groups')
+  groups
+    .find()
+    .toArray(function (err, results) {
+      if (!err) {
+        callback(results);
+      } else {
+        console.error(err);
+      }
+    });
+}
+
 function getSearchResultsByGroup (group, db, callback) {
   var questions = db.collection('questions');
   questions
@@ -1048,4 +1141,17 @@ function verifyEmail (code, email, db, callback) {
         callback('Incorrect verification code!', null);
       }
     });
+}
+
+function addUserToGroup (userID, groupID, db, callback) {
+  getNextSequence('userGroupID', db, function (nextUserGroupID) {
+    db.collection('userGroups')
+      .insert({
+        _id: nextUserGroupID,
+        userID: userID,
+        groupID: groupID
+      }, function (err, result) {
+        callback(err, result)
+      });
+  });
 }

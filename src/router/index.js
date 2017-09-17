@@ -12,6 +12,8 @@ import Search from '@/components/Search'
 import Groups from '@/components/Groups'
 import Logs from '@/components/Logs'
 import Verify from '@/components/Verify'
+import NewGroup from '@/components/NewGroup'
+import Group from '@/components/Group'
 
 Vue.use(Router)
 
@@ -68,6 +70,16 @@ export default new Router({
       path: '/verify',
       name: 'Verify',
       component: Verify
+    },
+    {
+      path: '/newgroup',
+      name: 'NewGroup',
+      component: NewGroup
+    },
+    {
+      path: '/group/:groupID',
+      name: 'Group',
+      component: Group
     },
     {
       path: '/',

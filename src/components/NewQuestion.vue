@@ -28,6 +28,13 @@
       </div>
       <div class='editor'></div>
       <br />
+      <div class='section-title'>
+        select group to post in:
+      </div>
+      <select id='groupSelect'>
+        <option value='default'>Select one...</option>
+        <option v-for='group in groups' :value='group._id'>{{ group.title }}</option>
+      </select>
       <a class='post-button' v-on:click='showModal'>Post</a>
     </div>
     <div class='limit-warning-modal-container' :style='modalStyles'>
@@ -51,7 +58,8 @@
     data () {
       return {
         modalStyles: {display: 'none'},
-        editor: null
+        editor: null,
+        groups: []
       }
     },
     components: {
@@ -72,9 +80,21 @@
         theme: 'snow'
       }
       this.editor = new Quill('.editor', editorOptions)
+      let _this = this
       ax.get(window.backend_url + '/visitedNewQuestionPage' +
         '?userID=' + window.getCookie('userID') +
         '&email=' + window.getCookie('email'))
+
+      ax.get(window.backend_url + '/getGroupsForUser' +
+        '?userID=' + window.getCookie('userID') +
+        '&email=' + window.getCookie('email'))
+        .then(function (response) {
+          if (!response.data.err) {
+            _this.groups = response.data.results
+          } else {
+            window.notify(null, response.data.err)
+          }
+        })
     },
     methods: {
       showModal (e) {
@@ -94,6 +114,7 @@
           ax.get(window.backend_url + '/addNewQuestion/?' +
             'title=' + this.$el.querySelector('input').value +
             '&body=' + this.$el.querySelector('.editor').childNodes[0].innerHTML +
+            '&groupID=' + this.$el.querySelector('#groupSelect').value +
             '&userID=' + window.getCookie('userID') +
             '&email=' + window.getCookie('email') +
             '&sessionToken=' + window.getCookie('sessionToken')

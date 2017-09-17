@@ -1,19 +1,19 @@
 <template>
   <div class='content-container'>
     <div class='header-space'></div>
-    <div class='big-title'>Find your major:</div>
-    <Group :key='info._id' v-for='info in groupNames' :info='info'/>
+    <div class='big-title'>Find a group:</div>
+    <GroupListItem :key='info._id' v-for='info in groupNames' :info='info'/>
   </div>
 
 </template>
 
 <script>
-import Group from '@/components/parts/Group'
+import GroupListItem from '@/components/parts/GroupListItem'
 import ax from 'axios'
 
 export default {
   components: {
-    Group
+    GroupListItem
   },
   data () {
     return {

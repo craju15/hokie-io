@@ -26,7 +26,7 @@
       <!-- <a id='facebookLogin' v-on:click='facebookLogin' v-if='!isLoggedIn'>
         <img src='../../assets/facebook-icon.png'/>Login with Facebook
       </a> -->
-      <router-link :to='isLoggedIn ? "/newquestion" : "/signup"' id='new-question-button'>New Question!</router-link>
+      <router-link :to='isLoggedIn ? "/newquestion" : "/login"' id='new-question-button'>New Question!</router-link>
       <router-link to='/login' v-if='!isLoggedIn'>login</router-link>
       <a v-if='isLoggedIn' v-on:click='handleLogout' >logout</a>
       <router-link :to='"/profile/" + userID' v-if='isLoggedIn'>profile</router-link>
@@ -49,7 +49,7 @@
         linksLeft: [
           {title: 'home', target: '/'},
           {title: 'about', target: '/about'},
-          {title: 'majors', target: '/groups'}
+          {title: 'groups', target: '/groups'}
         ],
         searchBarStyles: {},
         linksStyles: {},

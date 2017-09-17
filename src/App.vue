@@ -34,7 +34,7 @@
       let _this = this;
 
       // webpack will replace the BACKEND_URL DEV_MODE variables
-      window.backend_url = "https://hokie.io";//BACKEND_URL;
+      window.backend_url = BACKEND_URL;
       
       window.dev_mode = DEV_MODE;
 
