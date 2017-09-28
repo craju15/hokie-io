@@ -361,15 +361,25 @@ function setupExpress (db) {
     });
   });
 
-//  app.get('/getSearchResultsByGroup/', function (req, res) {
-//    getSearchResultsByGroup(req.query.group, db, function (error, results) {
-//      results.map(function (result) {
-//        result.date = formatDate(result.date);
-//        return result;
-//      });
-//      res.send({results: results});
-//    });
-//  });
+  app.get('/getPopularQuestionsByGroup/', function (req, res) {
+    getPopularQuestionsByGroup(parseInt(req.query.group), db, function (results) {
+      results.map(function (result) {
+        result.date = formatDate(result.date);
+        return result;
+      });
+      res.send({results: results});
+    });
+  });
+
+  app.get('/getRecentQuestionsByGroup/', function (req, res) {
+    getRecentQuestionsByGroup(parseInt(req.query.group), db, function (results) {
+      results.map(function (result) {
+        result.date = formatDate(result.date);
+        return result;
+      });
+      res.send({results: results});
+    });
+  });
 
   app.get('/updateQuestionAmt/', function (req, res) {
     var change = parseInt(req.query.change);
@@ -557,6 +567,18 @@ function setupExpress (db) {
         res.send({err: 'Invalid Session!'});
       }
     });
+  });
+
+  app.get('/getGroup', function (req, res) {
+    db.collection("groups")
+      .findOne({_id: parseInt(req.query.group)}, function (err, result) {
+        if (!err) {
+          res.send({group: result});
+          console.log(result);
+        } else {
+          console.error(err);
+        }
+      });
   });
 
   // This is a catch all which serves the index.html
@@ -1084,6 +1106,37 @@ function getPopularQuestions (db, callback) {
   });
 }
 
+function getPopularQuestionsByGroup (groupID, db, callback) {
+  var questionCollection = db.collection('questions');
+  questionCollection.count(function (error, numberOfQuestions) {
+    questionCollection
+      .find({groupID: groupID})
+      .sort({amt: -1})
+      .limit(6)
+      .toArray(function (err, results) {
+        if (!err) {
+          callback(results);
+        } else {
+          console.error(err);
+        }
+    });
+  });
+}
+
+function getRecentQuestionsByGroup (groupID, db, callback) {
+  var questionCollection = db.collection('questions');
+  questionCollection.count(function (error, numberOfQuestions) {
+    questionCollection.find({_id: {$gt: numberOfQuestions + questions_offset - 6}, groupID: groupID})
+      .sort({_id: -1}).toArray(function (err, results) {
+      if (!err) {
+        callback(results);
+      } else {
+        console.error(err);
+      }
+    });
+  });
+}
+
 function getMajors (db, callback) {
   var majors = db.collection('majors')
   majors
@@ -1154,4 +1207,12 @@ function addUserToGroup (userID, groupID, db, callback) {
         callback(err, result)
       });
   });
+}
+
+function checkIfGroupExists(groupID, db, callback) {
+  db.collection('groups')
+    .find({_id: groupID})
+    .toArray(function (err, groupDocs) {
+      callback(err, groupDocs.length != 0);
+    });
 }

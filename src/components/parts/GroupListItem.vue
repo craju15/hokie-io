@@ -1,5 +1,5 @@
 <template>
-  <router-link :to='"/search/groups/" + info._id'>
+  <router-link :to='"/group/" + info._id'>
     <div class='group-button'>
       {{ info._id + ': ' + info.title }}
     </div>
