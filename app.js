@@ -184,7 +184,7 @@ function setupExpress (db) {
         amt: 0,
         upVoters: [],
         downVoters: [],
-        groupID: req.query.groupID
+        groupID: req.query.group
       };
       verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
         if (verified) {
