@@ -3,7 +3,7 @@
     <div class='header-space'></div>
     <div class='home-container'>
       <div class='home-left-side'>
-        <div class='group-title'>{{ groupTitle }}<span> - Where shit gets done.</span></div>
+        <div class='group-title'>{{ groupTitle }}<span> - {{ groupMotd }}</span></div>
         <div class='big-title'>Recent Questions</div>
         <QuestionListItem
           v-for='(result, index) in recentResults'
@@ -60,7 +60,8 @@
 //          }
         ],
         popularResults: [],
-        groupTitle: '--'
+        groupTitle: '--',
+        groupMotd: '--'
       }
     },
     mounted () {
@@ -69,6 +70,7 @@
       '?group=' + this.$route.params.groupID)
         .then((response) => {
           _this.groupTitle = response.data.group.title
+          _this.groupMotd = response.data.group.motd
         })
       ax.get(window.backend_url + '/getRecentQuestionsByGroup/' +
       '?email=' + window.getCookie('email') +
