@@ -23,6 +23,9 @@
       <div class='home-right-side'>
         <div class='medium-title'>Join some groups!</div>
         <router-link :to='isLoggedIn ? "/newgroup" : "/login"' id='new-group-button'>Create a New Group!</router-link>
+        <div class='list-of-groups'>
+          <GroupListItem />
+        </div>
       </div>
     </div>
   </div>
@@ -58,7 +61,8 @@
 //            amt: 0
 //          }
         ],
-        popularResults: []
+        popularResults: [],
+        groupNames: []
       }
     },
     mounted () {
@@ -80,6 +84,17 @@
         .catch((error) => {
           window.notify(null, error)
         })
+      ax.get(window.backend_url + '/getGroups' +
+      '?courses=true' +
+      '&email=' + window.getCookie('email'))
+        .then(function (result) {
+          if (result.data.err) {
+            window.notify(null, result.data.err)
+          } else {
+            _this.groupNames = result.data.results
+          }
+        })
+
     }
   }
 </script>
