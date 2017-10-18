@@ -1,15 +1,19 @@
+Please do these problems in the text editor of your choosing.
+
 1. Write a function `formatDate(date)` that takes in a single argument, a
 `Date()` object, and returns a string with a formatted date. If the date
 represents some time yesterday, it should be formatted with
-"Yesterday at <time>", and if the date represents some time earlier today,
-write "Today at <time>".
+"Yesterday at [time]", and if the date represents some time earlier today,
+write "Today at [time]". Be creative with this! Tip: Here is the documentation
+for the Date() object:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 
 2. Write a function `square(array)` that takes in a single argument, an
 array containing integers, and returns an array of the same size with
 each number squared. You should use the the JavaScript `array.forEach()`
 method.
 
-3. Use the function you write in #2.
+3. Use the function you wrote in #2.
 
 4. Use the following function to multiply a and b. Note: If you are
 confused by what's going on, go through some of the exercises on the
@@ -67,15 +71,29 @@ var httpResponse = {
   ]
 }
 
-var names = ???;
+function getNames(httpResponse) {
+  ???
+}
 ```
 
-9. Will both of these code samples run properly?
-```
-function add(a, b) {return a + b;}
-```
+9. Will both of these code samples run properly? In what way do they differ?
 ```
 function add(a, b) {
-  return a + b;
+  if (a & b) {
+    return a + b;
+  }
+}
+```
+```
+function add(a,b){if(a & b){return a+b;}}
+```
+
+10. Why does this not throw an error? Why would it throw an error in most
+other languages? Hint: Look up what values in JavaScript "evaluate" to
+booleans.
+```
+var aNullVariable = null;
+if (aNullVariable) {
+  console.log("this message never shows")
 }
 ```
