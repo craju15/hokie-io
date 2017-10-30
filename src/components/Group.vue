@@ -221,6 +221,22 @@
   flex: 0.2;
 }
 
+@media screen and (max-width: 400px) {
+  .home-container {
+    display: block;
+    position: relative;
+  }
+
+  .home-left-side {
+    flex: none;
+  }
+
+  .home-right-side {
+    padding-top: 20px;
+    flex: none;
+  }
+}
+
 .join-group-button {
    background-color: rgba(100, 100, 250, 1);
    color: white;
