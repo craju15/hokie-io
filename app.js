@@ -671,16 +671,20 @@ function setupExpress (db) {
   });
 
   app.get('/editMotd', function (req, res) {
-    verifySession(req.query.email, req.query.sessionToken, db, function (err, verified) {
+    verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
       if (verified) {
-        checkIfUserInGroup(req.query.userID, parseInt(req.query.groupID), db, function (err, result) {
+        checkIfUserInGroup(req.query.userID, parseInt(req.query.groupID), db, function (err, isInGroup) {
           if (!err) {
-            db.collection('groups')
-              .update({parseInt(req.query.groupID)}, {$set: {
-                motd: req.query.newMotd
-              }}, function (err, result) {
-                callback(err, result);
-              });
+            if (isInGroup) {
+              db.collection('groups')
+                .update({_id: parseInt(req.query.groupID)}, {$set: {
+                  motd: req.query.newMotd
+                }}, function (err, result) {
+                  res.send({err: err, result: result})
+                });
+            } else {
+              res.send({err: "You are not in this group!"});
+            }
           } else {
             res.send({err: err});
           }

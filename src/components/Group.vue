@@ -6,8 +6,8 @@
         <TopMessage ref='topMessage' />
         <div class='group-title'>{{ groupTitle }}<span @click='handleEditMotd' v-if='!editingMotd'> - {{ groupMotd }}</span></div>
         <div v-if='editingMotd' class='edit-motd'>
-          <input :placeholder='groupMotd' @keydown='handleSubmitMotd'/>
-          <a @click='handleMotdChange' href='#'>submit</a>
+          <input id='motd-input' :value='groupMotd' @keydown='handleSubmitMotd'/>
+          <a @click='handleSubmitMotd' href='#'>submit</a>
           &nbsp;
           <a @click='cancelEditMotd' href='#'>cancel</a>
         </div>
@@ -138,8 +138,24 @@
         this.editingMotd = false
       },
       handleSubmitMotd (e) {
-        if (e.key === 'Enter') {
-          console.log('changing motd')
+        let _this = this
+        if (e.key === 'Enter' || !e.key) {
+          console.log('hi')
+          ax.get(window.backend_url + '/editMotd' +
+          '?email=' + window.getCookie('email') +
+          '&userID=' + window.getCookie('userID') +
+          '&sessionToken=' + window.getCookie('sessionToken') +
+          '&groupID=' + _this.$route.params.groupID +
+          '&newMotd=' + _this.$el.querySelector('#motd-input').value)
+            .then(function (response) {
+              if (!response.data.err) {
+                console.log(response)
+                _this.editingMotd = false
+                _this.groupMotd = _this.$el.querySelector('#motd-input').value
+              } else {
+                window.notify(null, response.data.err)
+              }
+            })
         }
       }
     },
