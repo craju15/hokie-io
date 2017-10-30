@@ -37,7 +37,7 @@ export default {
   mounted () {
     let _this = this
     let t = setInterval(function () {
-      ax.get('https://hokie.io' + '/getLast100Logs' +
+      ax.get(window.backend_url + '/getLast100Logs' +
         '?userID=' + window.getCookie('userID'))
         .then(function (result) {
           if (result.data.err) {

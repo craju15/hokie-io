@@ -51,7 +51,7 @@ export default {
         '&email=' + window.getCookie('email') +
         '&sessionToken=' + window.getCookie('sessionToken') +
         '&title=' + e.target.elements.title.value +
-        '&purpose=' + e.target.elements.title.purpose)
+        '&motd=' + e.target.elements.purpose.value)
         .then(function (response) {
           if (!response.data.err) {
             _this.$router.push({path: '/group/' + response.data.groupID})

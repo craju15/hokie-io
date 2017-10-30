@@ -40,7 +40,7 @@
 
       window.browser_code = 'f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9';
 
-      window.cookie_expire_time = 1; // TODO: Make this longer
+      window.cookie_expire_time = 7; // TODO: Make this longer
 
       window.notify = function (ParentObj, message) {
         _this.$refs.notification.notify(message)
@@ -328,8 +328,7 @@
   }
 
   .load-more-button:active {
-    left: 4px;
-    top: 4px;
+    background-color: grey;
   }
 
   .big-title {

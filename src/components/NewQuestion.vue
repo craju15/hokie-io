@@ -28,10 +28,13 @@
       </div>
       <div class='editor'></div>
       <br />
-      <div class='section-title'>
+      <div v-if='!showGroupSelect' class='posting-to-group section-title'>
+        Posting to {{ groupTitle }}
+      </div>
+      <div v-if='showGroupSelect' class='section-title'>
         select group to post in:
       </div>
-      <select id='groupSelect'>
+      <select v-if='showGroupSelect' id='groupSelect'>
         <option value='default'>Select one...</option>
         <option v-for='group in groups' :value='group._id'>{{ group.title }}</option>
       </select>
@@ -59,7 +62,9 @@
       return {
         modalStyles: {display: 'none'},
         editor: null,
-        groups: []
+        groups: [],
+        showGroupSelect: true,
+        groupTitle: '--'
       }
     },
     components: {
@@ -81,6 +86,16 @@
       }
       this.editor = new Quill('.editor', editorOptions)
       let _this = this
+      let group = this.$route.params.groupID
+      if (group) {
+        this.showGroupSelect = false
+        ax.get(window.backend_url + '/getGroup' +
+        '?email=' + window.getCookie('email') +
+        '&group=' + this.$route.params.groupID)
+          .then((response) => {
+            _this.groupTitle = response.data.group.title
+          })
+      }
       ax.get(window.backend_url + '/visitedNewQuestionPage' +
         '?userID=' + window.getCookie('userID') +
         '&email=' + window.getCookie('email'))
@@ -111,10 +126,17 @@
         if (this.$el.querySelector('.editor').childNodes[0].innerHTML === '<p><br></p>') {
           window.notify(null, 'Please include a body!')
         } else {
+          let groupID
+          if (!_this.isInGroup) {
+            groupID = _this.$route.params.groupID
+          } else {
+            groupID = this.$el.querySelector('#groupSelect').value
+          }
+          console.log(groupID)
           ax.get(window.backend_url + '/addNewQuestion/?' +
             'title=' + this.$el.querySelector('input').value +
             '&body=' + this.$el.querySelector('.editor').childNodes[0].innerHTML +
-            '&groupID=' + this.$el.querySelector('#groupSelect').value +
+            '&group=' + groupID +
             '&userID=' + window.getCookie('userID') +
             '&email=' + window.getCookie('email') +
             '&sessionToken=' + window.getCookie('sessionToken')

@@ -10,7 +10,7 @@
           :delay='(index + 1) * 1'
           :key='index'
         />
-        <a class='load-more-button'>see more</a>
+        <a @click='loadMore' query='recent' class='load-more-button'>see more</a>
         <div class='big-title'>Popular Questions</div>
         <QuestionListItem
           v-for='(result, index) in popularResults'
@@ -18,14 +18,14 @@
           :delay='(index + 1) * 1'
           :key='index'
         />
-        <a class='load-more-button'>see more</a>
+        <a @click='loadMore' query='popular' class='load-more-button'>see more</a>
       </div>
       <div class='home-right-side'>
         <div class='medium-title'>Join some groups!</div>
-        <router-link :to='isLoggedIn ? "/newgroup" : "/login"' id='new-group-button'>Create a New Group!</router-link>
         <div class='list-of-groups'>
-          <GroupListItem />
+          <GroupListItem :key='info._id' v-for='info in groupNames' :info='info'/>
         </div>
+        <router-link :to='isLoggedIn ? "/newgroup" : "/login"' id='new-group-button'>Create a New Group!</router-link>
       </div>
     </div>
   </div>
@@ -33,13 +33,15 @@
 
 <script>
   import QuestionListItem from '@/components/parts/QuestionListItem'
+  import GroupListItem from '@/components/parts/GroupListItem'
   import ax from 'axios'
 
   export default {
     name: 'search',
     props: ['isLoggedIn'],
     components: {
-      QuestionListItem
+      QuestionListItem,
+      GroupListItem
     },
     data () {
       return {
@@ -65,6 +67,15 @@
         groupNames: []
       }
     },
+    methods: {
+      loadMore (e) {
+        e.preventDefault()
+        let query = e.target.getAttribute('query')
+        let _this = this
+        _this.$router.push({path: '/more/' + query})
+        console.log('0')
+      }
+    },
     mounted () {
       let _this = this
       ax.get(window.backend_url + '/getRecentQuestions/' +
@@ -84,6 +95,7 @@
         .catch((error) => {
           window.notify(null, error)
         })
+
       ax.get(window.backend_url + '/getGroups' +
       '?courses=true' +
       '&email=' + window.getCookie('email'))
@@ -94,7 +106,6 @@
             _this.groupNames = result.data.results
           }
         })
-
     }
   }
 </script>
@@ -105,12 +116,12 @@
 }
 
 .home-left-side {
-  flex: 0.7;
+  flex: 0.8;
 }
 
 .home-right-side {
   padding-top: 20px;
-  flex: 0.3;
+  flex: 0.2;
 }
 
   #new-group-button {

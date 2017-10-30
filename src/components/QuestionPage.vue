@@ -81,29 +81,46 @@
         this.$router.go(-1)
       },
       getQuestion () {
-        ax.get(window.backend_url + '/getQuestionInfo/' + this.$route.params.questionID +
+        let _this = this
+        ax.get(window.backend_url + '/getQuestionInfo/' + _this.$route.params.questionID +
           '/?email=' + window.getCookie('email') +
           '&userID=' + window.getCookie('userID'))
           .then((response) => {
-            let email = window.getCookie('email')
-            let questionVoteState = 0
-            if (response.data.questionInfo.upVoters.includes(email)) {
-              questionVoteState = 1
-            } else if (response.data.questionInfo.downVoters.includes(email)) {
-              questionVoteState = -1
-            }
-            this.answers = response.data.answers.map(function (answer) {
-              let answerVoteState = 0
-              if (answer.upVoters.includes(email)) {
-                answerVoteState = 1
-              } else if (answer.downVoters.includes(email)) {
-                answerVoteState = -1
-              }
-              answer.voteState = answerVoteState
-              return answer
-            })
-            this.questionInfo = response.data.questionInfo
-            this.questionInfo.voteState = questionVoteState
+            ax.get(window.backend_url + '/getGroup' +
+            '?email=' + window.getCookie('email') +
+            '&group=' + response.data.questionInfo.groupID)
+              .then(function (response2) {
+                if (!response.data.err) {
+                  if (response2.data.group) {
+                    response.data.questionInfo.groupTitle = response2.data.group.title
+                  }
+
+                  let email = window.getCookie('email')
+                  let questionVoteState = 0
+                  if (response.data.questionInfo.upVoters.includes(email)) {
+                    questionVoteState = 1
+                  } else if (response.data.questionInfo.downVoters.includes(email)) {
+                    questionVoteState = -1
+                  }
+                  _this.answers = response.data.answers.map(function (answer) {
+                    let answerVoteState = 0
+                    if (answer.upVoters.includes(email)) {
+                      answerVoteState = 1
+                    } else if (answer.downVoters.includes(email)) {
+                      answerVoteState = -1
+                    }
+                    answer.voteState = answerVoteState
+                    return answer
+                  })
+                  _this.answers.sort(function (a, b) {
+                    return b.amt - a.amt
+                  })
+                  _this.questionInfo = response.data.questionInfo
+                  _this.questionInfo.voteState = questionVoteState
+                } else {
+                  window.notify(null, response.data.err)
+                }
+              })
           })
       }
     },
@@ -126,51 +143,52 @@
           body: '-',
           name: '-',
           date: '-',
-          voteState: 0
+          voteState: 0,
+          groupTitle: '--'
         },
         answers: [
-          {
-            amt: 0,
-            body: '-',
-            name: '-',
-            date: '-',
-            accepted: false,
-            voteState: 0,
-            comments: [
-              {
-                body: '-',
-                name: '-',
-                date: '-'
-              },
-              {
-                body: '-',
-                name: '-',
-                date: '-'
-              }
-            ]
-          },
-          {
-            amt: 0,
-            body: '-',
-            name: '-',
-            date: '-',
-            accepted: false,
-            voteState: 0,
-            comments: [
-              {
-                body: '-',
-                name: '-',
-                date: '-'
-              }
-            ]
-          },
-          {
-            amt: 0,
-            body: '-',
-            name: '-',
-            date: '-',
-            accepted: false
-          }
+//           {
+//             amt: 0,
+//             body: '-',
+//             name: '-',
+//             date: '-',
+//             accepted: false,
+//             voteState: 0,
+//             comments: [
+//               {
+//                 body: '-',
+//                 name: '-',
+//                 date: '-'
+//               },
+//               {
+//                 body: '-',
+//                 name: '-',
+//                 date: '-'
+//               }
+//             ]
+//           },
+//           {
+//             amt: 0,
+//             body: '-',
+//             name: '-',
+//             date: '-',
+//             accepted: false,
+//             voteState: 0,
+//             comments: [
+//               {
+//                 body: '-',
+//                 name: '-',
+//                 date: '-'
+//               }
+//             ]
+//           },
+//           {
+//             amt: 0,
+//             body: '-',
+//             name: '-',
+//             date: '-',
+//             accepted: false
+//           }
         ]
       }
     }

@@ -103,6 +103,7 @@ function setupExpress (db) {
         result.date = formatDate(result.date);
         return result;
       });
+      // uniqueword
       addToLog('getPopularQuestions', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
         res.send({results: results});
       });
@@ -152,10 +153,14 @@ function setupExpress (db) {
         findUser(req.query.userID, db, function (userDoc) {
           commentInfo.name = userDoc.firstName + ' ' + userDoc.lastName;
           addNewComment(commentInfo, req.query.userID, parseInt(req.query.answerID), db, function (err, result) {
-            commentInfo.date = formatDate(commentInfo.date);
-            addToLog('addComment', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
-              res.send({err: err, commentInfo: commentInfo});
-            });
+            if (!err) {
+              commentInfo.date = formatDate(commentInfo.date);
+              addToLog('addComment', req.get('host') + req.originalUrl, req.query.email, req.query.userID, db, function (err) {
+                res.send({err: err, commentInfo: commentInfo});
+              });
+            } else {
+              res.send({err, err});
+            }
           })
         });
       } else {
@@ -184,7 +189,7 @@ function setupExpress (db) {
         amt: 0,
         upVoters: [],
         downVoters: [],
-        groupID: req.query.group
+        groupID: parseInt(req.query.group)
       };
       verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
         if (verified) {
@@ -372,7 +377,7 @@ function setupExpress (db) {
   });
 
   app.get('/getRecentQuestionsByGroup/', function (req, res) {
-    getRecentQuestionsByGroup(parseInt(req.query.group), db, function (results) {
+    getRecentQuestionsByGroup(parseInt(req.query.groupID), db, function (results) {
       results.map(function (result) {
         result.date = formatDate(result.date);
         return result;
@@ -464,7 +469,7 @@ function setupExpress (db) {
 
   app.get('/emailVerificationCode', function (req, res) {
     fs.readFile('pass.txt', 'utf8', function (err, data) {
-      console.log(data.slice(0, data.length - 1));
+      //console.log(data.slice(0, data.length - 1));
       var transport = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -505,6 +510,7 @@ function setupExpress (db) {
     var groupInfo = {};
     groupInfo.title = req.query.title;
     groupInfo.creator = req.query.userID;
+    groupInfo.motd = req.query.motd;
     groupInfo.date = new Date();
     verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
       if (verified) {
@@ -557,10 +563,16 @@ function setupExpress (db) {
       });
   });
 
+  app.get('/checkIfUserInGroup', function (req, res) {
+    checkIfUserInGroup(req.query.userID, parseInt(req.query.groupID), db, function (err, isInGroup) {
+      res.send({err: err, isInGroup: isInGroup})
+    });
+  });
+
   app.get('/joinGroup', function (req, res) {
     verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
       if (verified) {
-        addUserToGroup(req.query.userID, req.query.groupID, db, function (err, result) {
+        addUserToGroup(req.query.userID, parseInt(req.query.groupID), db, function (err, result) {
           res.send({err: err, result: result});
         });
       } else {
@@ -574,11 +586,109 @@ function setupExpress (db) {
       .findOne({_id: parseInt(req.query.group)}, function (err, result) {
         if (!err) {
           res.send({group: result});
-          console.log(result);
         } else {
           console.error(err);
         }
       });
+  });
+
+  app.get('/getMoreRecent', function (req, res) {
+    db.collection('questions')
+      .find({})
+      .sort({_id: -1})
+      .skip(parseInt(req.query.skip))
+      .limit(10)
+      .toArray(function (err, results) {
+        results.map(function (result) {
+          result.date = formatDate(result.date);
+          return result;
+        })
+        res.send({results: results});
+      });
+  });
+
+  app.get('/getMorePopular', function (req, res) {
+    db.collection('questions')
+      .find({})
+      .sort({amt: -1})
+      .skip(parseInt(req.query.skip))
+      .limit(10)
+      .toArray(function (err, results) {
+        results.map(function (result) {
+          result.date = formatDate(result.date);
+          return result;
+        });
+        res.send({results: results});
+      });
+  });
+
+  app.get('/getMoreRecentByGroup', function (req, res) {
+    db.collection('questions')
+      .find({groupID: parseInt(req.query.group)})
+      .sort({_id: -1})
+      .skip(parseInt(req.query.skip))
+      .limit(10)
+      .toArray(function (err, results) {
+        results.map(function (result) {
+          result.date = formatDate(result.date);
+          return result;
+        });
+        db.collection('groups')
+          .findOne({_id: parseInt(req.query.group)}, function (err, groupDoc) {
+            res.send({results: results, groupTitle: groupDoc.title});
+          });
+      });
+  });
+
+  app.get('/getMorePopularByGroup', function (req, res) {
+    db.collection('questions')
+      .find({groupID: parseInt(req.query.group)})
+      .sort({amt: -1})
+      .skip(parseInt(req.query.skip))
+      .limit(10)
+      .toArray(function (err, results) {
+        results.map(function (result) {
+          result.date = formatDate(result.date);
+          return result;
+        });
+        db.collection('groups')
+          .findOne({_id: parseInt(req.query.group)}, function (err, groupDoc) {
+            res.send({results: results, groupTitle: groupDoc.title});
+          });
+      });
+  });
+
+  app.get('/removeUserFromGroup', function (req, res) {
+    verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
+      if (verified) {
+        removeUserFromGroup(req.query.userID, parseInt(req.query.groupID), db, function (err, result) {
+          res.send({err: err, result: result});
+        })
+      } else {
+        res.send({err: "Invalid session!"})
+      }
+    })
+  });
+
+  app.get('/editMotd', function (req, res) {
+    verifySession(req.query.email, req.query.sessionToken, db, function (err, verified) {
+      if (verified) {
+        checkIfUserInGroup(req.query.userID, parseInt(req.query.groupID), db, function (err, result) {
+          if (!err) {
+            db.collection('groups')
+              .update({parseInt(req.query.groupID)}, {$set: {
+                motd: req.query.newMotd
+              }}, function (err, result) {
+                callback(err, result);
+              });
+          } else {
+            res.send({err: err});
+          }
+        });
+      } else {
+        res.send({err: "Invalid session!"})
+      }
+    });
   });
 
   // This is a catch all which serves the index.html
@@ -630,16 +740,16 @@ function findUserArray (userID, db, callback) {
 }
 
 function getRecentQuestions (db, callback) {
-  var questionCollection = db.collection('questions');
-  questionCollection.count(function (error, numberOfQuestions) {
-    questionCollection.find({_id: {$gt: numberOfQuestions + questions_offset - 6}})
-      .sort({_id: -1}).toArray(function (err, results) {
-      if (!err) {
-        callback(results);
-      } else {
-        console.error(err);
-      }
-    });
+  db.collection('questions')
+    .find({})
+    .sort({_id: -1})
+    .limit(6)
+    .toArray(function (err, results) {
+    if (!err) {
+      callback(results);
+    } else {
+      console.error(err);
+    }
   });
 }
 
@@ -661,10 +771,10 @@ function formatDate (dateObj) {
   var year = dateObj.getFullYear();
   var hours = dateObj.getHours();
   var minutes = dateObj.getMinutes();
-  var time = (hours % 12) + ":" + (minutes < 10 ? "0" : "") + minutes + (hours < 12 ? "am" : "pm");
-  if (day == currentDate.getDate()) {
+  var time = (hours % 12 == 0 ? 12 : hours % 12) + ":" + (minutes < 10 ? "0" : "") + minutes + (hours < 12 ? "am" : "pm");
+  if (day == currentDate.getDate() && dateObj.getMonth() == currentDate.getMonth()) {
     return 'Today' + ' at ' + time;
-  } if (day == currentDate.getDate() - 1) {
+  } if (day == currentDate.getDate() - 1 && dateObj.getMonth() == currentDate.getMonth()) {
     return 'Yesterday' + ' at ' + time;
   } else if (year == currentDate.getFullYear()) {
     return month + ' ' + day;
@@ -736,7 +846,7 @@ function findCommentsForManyAnswers(answerIDs, db, callback) {
 function addNewAnswer(answerInfo, userID, questionID, db, callback) {
   db.collection('answers')
     .findOne({$and: [{userID: userID}, {question: questionID}]}, function (err, result) {
-      if (result) {
+      if (false && result) { // for now, don't limit users
         callback("Cannot post another answer!")
       } else {
         getNextSequence('answerID', db, function (nextAnswerID) {
@@ -755,7 +865,7 @@ function addNewAnswer(answerInfo, userID, questionID, db, callback) {
 function addNewComment(commentInfo, userID, answerID, db, callback) {
   db.collection('comments')
     .findOne({$and: [{userID: userID}, {answer: answerID}]}, function (err, result) {
-      if (result) {
+      if (false && result) { // for now, don't limit users
         callback("Cannot post another comment!");
       } else {
         getNextSequence('commentID', db, function (nextCommentID) {
@@ -811,7 +921,6 @@ function checkEmailVerified(email, db, callback) {
   db.collection('users').findOne({'email': email}, function (err, result) {
     if (!err) {
       if (result) {
-        console.log(result.emailVerified);
         callback(result.emailVerified);
       } else {
         callback(false);
@@ -1107,34 +1216,31 @@ function getPopularQuestions (db, callback) {
 }
 
 function getPopularQuestionsByGroup (groupID, db, callback) {
-  var questionCollection = db.collection('questions');
-  questionCollection.count(function (error, numberOfQuestions) {
-    questionCollection
-      .find({groupID: groupID})
-      .sort({amt: -1})
-      .limit(6)
-      .toArray(function (err, results) {
-        if (!err) {
-          callback(results);
-        } else {
-          console.error(err);
-        }
-    });
-  });
-}
-
-function getRecentQuestionsByGroup (groupID, db, callback) {
-  var questionCollection = db.collection('questions');
-  questionCollection.count(function (error, numberOfQuestions) {
-    questionCollection.find({_id: {$gt: numberOfQuestions + questions_offset - 6}, groupID: groupID})
-      .sort({_id: -1}).toArray(function (err, results) {
+  db.collection('questions')
+    .find({groupID: groupID})
+    .sort({amt: -1})
+    .limit(6)
+    .toArray(function (err, results) {
       if (!err) {
         callback(results);
       } else {
         console.error(err);
       }
-    });
   });
+}
+
+function getRecentQuestionsByGroup (groupID, db, callback) {
+  db.collection('questions')
+    .find({groupID: groupID})
+    .sort({_id: -1})
+    .limit(6)
+    .toArray(function (err, results) {
+    if (!err) {
+      callback(results);
+    } else {
+      console.error(err);
+    }
+   });
 }
 
 function getMajors (db, callback) {
@@ -1197,16 +1303,58 @@ function verifyEmail (code, email, db, callback) {
 }
 
 function addUserToGroup (userID, groupID, db, callback) {
-  getNextSequence('userGroupID', db, function (nextUserGroupID) {
-    db.collection('userGroups')
-      .insert({
-        _id: nextUserGroupID,
-        userID: userID,
-        groupID: groupID
-      }, function (err, result) {
-        callback(err, result)
-      });
+  checkIfUserInGroup(userID, groupID, db, function (err, isInGroup) {
+    if (!err) {
+      if (!isInGroup) {
+        getNextSequence('userGroupID', db, function (nextUserGroupID) {
+          db.collection('userGroups')
+            .insert({
+              _id: nextUserGroupID,
+              userID: userID,
+              groupID: groupID
+            }, function (err, result) {
+              callback(err, result);
+            });
+        });
+      } else {
+        callback("You are already in this group!");
+      }
+    } else {
+      callback(err);
+    }
+
   });
+}
+
+function removeUserFromGroup (userID, groupID, db, callback) {
+  checkIfUserInGroup(userID, groupID, db, function (err, isInGroup) {
+    if (!err) {
+      if (isInGroup) {
+        db.collection('userGroups')
+          .remove({
+            userID: userID,
+            groupID: groupID
+          }, function (err, result) {
+            callback(err, result);
+          });
+      } else {
+        callback("You are not in this group!");
+      }
+    } else {
+      callback(err);
+    }
+  });
+}
+
+function checkIfUserInGroup (userID, groupID, db, callback) {
+  db.collection('userGroups')
+    .findOne({userID: userID, groupID: groupID}, function (err, results) {
+      if (results) {
+        callback(err, true);
+      } else {
+        callback(err, false);
+      }
+    });
 }
 
 function checkIfGroupExists(groupID, db, callback) {

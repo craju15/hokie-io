@@ -16,6 +16,11 @@
         <router-link :to='"/profile/" + info.userID' class='qa-name'>{{ info.name }}</router-link>
         <span class='qa-date'>- {{ info.date }}</span>
       </div>
+      <div class='qa-group'>
+        Posted to <router-link :to='info.groupID ? "/group/" + info.groupID : "/"'>
+          {{ info.groupTitle ? info.groupTitle : 'Front Page' }}
+        </router-link>
+      </div>
       <div class='qa-actions'>
         <a href='#' class='qa-action-duplicate'>mark as duplicate</a>
         <a href='#' class='qa-action-report'>report question</a>

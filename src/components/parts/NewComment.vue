@@ -12,7 +12,7 @@
     methods: {
       postComment (e) {
         e.preventDefault()
-        let comment = this.$el.querySelector('.newcomment-input').innerHTML
+        let comment = this.$el.querySelector('.newcomment-input').textContent
         this.postNewCommentHandler(comment)
       }
     }

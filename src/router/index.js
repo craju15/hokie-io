@@ -14,6 +14,7 @@ import Logs from '@/components/Logs'
 import Verify from '@/components/Verify'
 import NewGroup from '@/components/NewGroup'
 import Group from '@/components/Group'
+import More from '@/components/More'
 
 Vue.use(Router)
 
@@ -44,6 +45,11 @@ export default new Router({
     {
       path: '/newquestion',
       name: 'NewQuestion',
+      component: NewQuestion
+    },
+    {
+      path: '/newquestion/:groupID',
+      name: 'NewQuestionInGroup',
       component: NewQuestion
     },
     {
@@ -80,6 +86,16 @@ export default new Router({
       path: '/group/:groupID',
       name: 'Group',
       component: Group
+    },
+    {
+      path: '/more/:query/:group',
+      name: 'More',
+      component: More
+    },
+    {
+      path: '/more/:query',
+      name: 'MoreInGroup',
+      component: More
     },
     {
       path: '/',

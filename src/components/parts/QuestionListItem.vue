@@ -4,7 +4,9 @@
       <div class='list-item-voter-amt'><p>{{ info.amt }}</p></div>
       <h2 class="list-item-title">{{ info.title }}</h2>
       <div class='list-item-qa-person-info'>
-        <router-link :to='"/profile/" + info.userID' class='qa-name'>{{ info.name }}</router-link>
+        <router-link :to='"/profile/" + info.userID' class='qa-name'>
+          {{ info.name }}
+        </router-link>
         <span class='qa-date'>- {{ info.date }}</span>
       </div>
     </div>
@@ -28,9 +30,9 @@
   .question-list-item {
     opacity: 0;
     background-color: #eee;
-    padding: 10px;
-    padding-bottom: 3px;
-    padding-top: 3px;
+    padding: 4px;
+    padding-bottom: 1px;
+    padding-top: 1px;
     width: 95%;
     margin: 0 auto;
     position: relative;
@@ -44,8 +46,9 @@
   }
 
   .question-list-item:active {
-    left: 4px;
-    top: 4px;
+    /* left: 4px;*/
+    /*top: 4px;*/
+    background-color: grey;
     box-shadow: none;
   }
 
@@ -79,8 +82,8 @@
 
   .list-item-qa-person-info {
     position: absolute;
-    bottom: 6px;
-    left: 60px;
+    bottom: 4px;
+    left: 55px;
   }
 
 </style>
