@@ -697,15 +697,15 @@ function setupExpress (db) {
     });
   });
 
-  app.get('/getSubLevel', function (req, res) {
+  app.get('getSubLevel', function (req, res) {
     verifySession(req.query.email, req.query.sessionToken, db, function (verified) {
       if (verified) {
-        db.collection('users')
+        db.collect('users')
           .findOne({userID: req.query.userID}, function (err, userDoc) {
-            if (userDoc) {
+            if (!err) {
               res.send({err: err, subLevel: userDoc.subLevel});
             } else {
-              res.send({err: "Invalid userID!"});
+              res.send({err: err});
             }
           });
       } else {

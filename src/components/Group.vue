@@ -316,6 +316,10 @@
     cursor: pointer;
   }
 
+  .group-title span:hover {
+    font-weight: bold;
+  }
+
   .edit-motd {
     display: inline-block;
   }

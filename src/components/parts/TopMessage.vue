@@ -1,19 +1,25 @@
 <template>
   <div class='top-message'>
     <div class='top-message-body'>This is the message body!</div>
-    <a @click='handleClose' href='#'>dismiss</a>
+    <a @click='dismiss' href='#'>dismiss</a>
   </div>
 </template>
 
 <script>
   export default {
     methods: {
-      display (message) {
+      display (message, duration) {
         this.$el.querySelector('.top-message-body').innerHTML = message
         this.$el.style.display = 'block'
+        let _this = this
+        if (duration) {
+          setTimeout(function () {
+            _this.dismiss()
+          }, duration)
+        }
       },
-      handleClose (e) {
-        e.preventDefault()
+      dismiss (e) {
+        e && e.preventDefault()
         this.$el.style.display = 'none'
       }
     }

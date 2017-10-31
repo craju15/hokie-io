@@ -15,6 +15,7 @@ import Verify from '@/components/Verify'
 import NewGroup from '@/components/NewGroup'
 import Group from '@/components/Group'
 import More from '@/components/More'
+import Unsubscribe from '@/components/Unsubscribe'
 
 Vue.use(Router)
 
@@ -91,6 +92,11 @@ export default new Router({
       path: '/more/:query/:group',
       name: 'More',
       component: More
+    },
+    {
+      path: '/unsubscribe',
+      name: 'Unsubscribe',
+      component: Unsubscribe
     },
     {
       path: '/more/:query',

@@ -1,0 +1,41 @@
+<template>
+  <div class='content-container'>
+    <div class='header-space'></div>
+    <h1>Unsubscribe</h1>
+    <div class='unsubscribe-container'>
+      <h3>Unsubscribe</h3>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      groups: []
+    }
+  }
+}
+</script>
+
+<style scope>
+
+  .unsubscribe-container {
+    width: 100%;
+    background-color: #eee;
+    padding: 15px;
+    font-size: 20px;
+    animation: 0.3s ease-out 1 slideIn forwards;
+    margin-bottom: 15px;
+  }
+
+  .unsubscribe-container a {
+    color: black;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .unsubscribe-container a:hover {
+    color: grey;
+  }
+</style>
