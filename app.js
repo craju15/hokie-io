@@ -898,30 +898,34 @@ function addNewAnswer(answerInfo, userID, questionID, db, callback) {
           db.collection('answers').insert(answerInfo, function (err, result) {
             // send callback, THEN send email (faster)
             callback(err, result);
-            // get information about question poster
-            db.collection('questions')
-              .findOne({_id: questionID}, function (err, questionDoc) {
-                db.collection('users')
-                  .findOne({userID: questionDoc.userID}, function (err, userDoc) {
-                    // generate and send email
-                    var email = userDoc.email;
-                    var subject = 'Somebody answered your question!';
-                    var message = userDoc.firstName + ',<br /><br />' +
-                      '<p>Your question: <b>' + questionDoc.title +
-                      '</b> was answered!</p>' +
-                      '<p>Click the following link to see their response!</p>' +
-                      '<p><a href="https://hokie.io/question/' +
-                      questionDoc._id + '">https://hokie.io/question/' +
-                      questionDoc._id + '</a></p><br />' +
-                      'Sincerely,<br /><br />' +
-                      'Jake, the creator of Hokie.IO';
-                    sendEmail(email, subject, message, db,
-                      function (err, result) {
+            // check subscription level
+            isSubscribedTo(userID, "answers", db, function (isSubscribed) {
+              if (isSubscribed) {
+                // get information about question poster
+                db.collection('questions')
+                  .findOne({_id: questionID}, function (err, questionDoc) {
+                    db.collection('users')
+                      .findOne({userID: questionDoc.userID}, function (err, userDoc) {
+                        // generate and send email
+                        var email = userDoc.email;
+                        var subject = 'Somebody answered your question!';
+                        var message = userDoc.firstName + ',<br /><br />' +
+                          '<p>Your question: <b>' + questionDoc.title +
+                          '</b> was answered!</p>' +
+                          '<p>Click the following link to see their response!</p>' +
+                          '<p><a href="https://hokie.io/question/' +
+                          questionDoc._id + '">https://hokie.io/question/' +
+                          questionDoc._id + '</a></p><br />' +
+                          'Sincerely,<br /><br />' +
+                          'Jake, the creator of Hokie.IO';
+                        sendEmail(email, subject, message, db,
+                          function (err, result) {
+                          });
                       });
                   });
-              });
-            }
-          );
+              }
+            });
+          });
         });
       }
     });
@@ -939,6 +943,35 @@ function addNewComment(commentInfo, userID, answerID, db, callback) {
             commentInfo,
             function (err, result) {
               callback(err, result)
+
+//              // check subscription level
+//              isSubscribedTo(userID, "comments", db, function (isSubscribed) {
+//                if (isSubscribed) {
+//                  // get information about question poster
+//                  db.collection('questions')
+//                    .findOne({_id: questionID}, function (err, questionDoc) {
+//                      db.collection('users')
+//                        .findOne({userID: questionDoc.userID}, function (err, userDoc) {
+//                          // generate and send email
+//                          var email = userDoc.email;
+//                          var subject = 'Somebody answered your question!';
+//                          var message = userDoc.firstName + ',<br /><br />' +
+//                            '<p>Somebody left a comment on your answer: <b>'
+//                            + questionDoc.title +
+//                            '</b></p>' +
+//                            '<p>Click the following link to see what they said!</p>' +
+//                            '<p><a href="https://hokie.io/question/' +
+//                            questionDoc._id + '">https://hokie.io/question/' +
+//                            questionDoc._id + '</a></p><br />' +
+//                            'Sincerely,<br /><br />' +
+//                            'Jake, the creator of Hokie.IO';
+//                          sendEmail(email, subject, message, db,
+//                            function (err, result) {
+//                            });
+//                        });
+//                    });
+//                }
+//              });
             }
           );
         });
@@ -953,6 +986,8 @@ function addNewQuestion(questionInfo, userID, db, callback) {
       questionInfo,
       function (err, result) {
         callback(err, result);
+        // get users in group
+        // and send them all users
       }
     );
   });
@@ -1414,11 +1449,7 @@ function removeUserFromGroup (userID, groupID, db, callback) {
 function checkIfUserInGroup (userID, groupID, db, callback) {
   db.collection('userGroups')
     .findOne({userID: userID, groupID: groupID}, function (err, results) {
-      if (results) {
-        callback(err, true);
-      } else {
-        callback(err, false);
-      }
+      callback(err, !!results);
     });
 }
 
@@ -1448,4 +1479,27 @@ function sendEmail(email, subject, message, db, callback) {
       callback(err, responseStatus);
     });
   });
+}
+
+function isSubscribedTo(userID, sub, db, callback) {
+  db.collection('users')
+    .findOne({userID: userID}, function (err, userDoc) {
+      if (!err) {
+        if (userDoc) {
+          var level = userDoc.subLevel;
+          console.log(sub === 'answers');
+          if (sub === 'answers') {
+            callback(parseInt(level.charAt(0)) == 1);
+          } else if (sub === 'comments') {
+            callback(parseInt(level.charAt(1)) == 1);
+          } else if (sub === 'questions') {
+            callback(parseInt(level.charAt(2)) == 1);
+          }
+        } else {
+          callback(null);
+        }
+      } else {
+        callback(null);
+      }
+    });
 }

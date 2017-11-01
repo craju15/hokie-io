@@ -10,6 +10,7 @@
       <label for='check1' class='css-label'>
         New <b>answers</b> to your questions
       </label><br><br>
+      <!--
       <input
         @click='handleSingleCheck'
         :checked='subLevel.charAt(1) == 1'
@@ -17,6 +18,7 @@
       <label for='check2' class='css-label'>
         New <b>comments</b> to your answers
       </label><br><br>
+      -->
       <input
         @click='handleSingleCheck'
         :checked='subLevel.charAt(2) == 1'

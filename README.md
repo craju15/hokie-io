@@ -1,4 +1,4 @@
-# askahokie
+# HokieIO
 
 > Q+A Site for Virginia Tech
 
